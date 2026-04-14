@@ -637,9 +637,49 @@
 
     function openStatus(venue) {
       if (!venue.opening_hours) return { cls: 'status-unknown', text: 'Hours not listed', color: '#aaa' };
-      return venue.opening_hours.open_now
-        ? { cls: 'status-open',   text: 'Open now',    color: '#6B9E7A' }
-        : { cls: 'status-closed', text: 'Closed now',  color: '#b94040' };
+      if (venue.opening_hours.open_now) return { cls: 'status-open', text: 'Open now', color: '#6B9E7A' };
+
+      // Closed — find the next opening time from periods data
+      const periods = venue.opening_hours.periods;
+      if (periods && periods.length) {
+        const now = new Date();
+        const currentDay = now.getDay(); // 0 = Sunday
+        const currentMins = now.getHours() * 60 + now.getMinutes();
+
+        for (let d = 0; d <= 7; d++) {
+          const checkDay = (currentDay + d) % 7;
+          const dayPeriods = periods
+            .filter(p => p.open && p.open.day === checkDay)
+            .sort((a, b) => parseInt(a.open.time, 10) - parseInt(b.open.time, 10));
+
+          for (const period of dayPeriods) {
+            const t = period.open.time; // "HHMM" 24-hour
+            const h = parseInt(t.slice(0, 2), 10);
+            const m = parseInt(t.slice(2, 4), 10);
+
+            // Skip times that have already passed today
+            if (d === 0 && h * 60 + m <= currentMins) continue;
+
+            // Format as 12-hour time
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            const hour12 = h % 12 || 12;
+            const minStr = m > 0 ? `:${String(m).padStart(2, '0')}` : '';
+            const timeLabel = `${hour12}${minStr} ${ampm}`;
+
+            let text;
+            if (d === 0)      text = `Closed — opens ${timeLabel}`;
+            else if (d === 1) text = `Closed — opens ${timeLabel} tomorrow`;
+            else {
+              const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+              text = `Closed — opens ${dayNames[checkDay]} ${timeLabel}`;
+            }
+
+            return { cls: 'status-closed', text, color: '#b94040' };
+          }
+        }
+      }
+
+      return { cls: 'status-closed', text: 'Closed now', color: '#b94040' };
     }
 
     function starsText(rating) {
