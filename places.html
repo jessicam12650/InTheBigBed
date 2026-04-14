@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dog-friendly Liverpool — inthebigbed</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,700;9..40,900&display=swap');
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      background-color: #F2EDE6;
+      color: #1C1C1A;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ─── NAV ─── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: #F2EDE6;
+      border-bottom: 1px solid #1C1C1A;
+      padding: 0 48px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-wordmark {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 900;
+      font-size: 22px;
+      color: #1C1C1A;
+      letter-spacing: -1px;
+      text-decoration: none;
+    }
+
+    .nav-back {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: #1C1C1A;
+      text-decoration: none;
+      border: 1px solid #1C1C1A;
+      padding: 8px 16px;
+      border-radius: 4px;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .nav-back:hover {
+      background-color: #1C1C1A;
+      color: #F2EDE6;
+    }
+
+    /* ─── PAGE HEADER ─── */
+    .page-header {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 64px 48px 40px;
+    }
+
+    .page-heading {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 900;
+      font-size: clamp(32px, 5vw, 56px);
+      color: #1C1C1A;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .page-sub {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 36px;
+      line-height: 1.5;
+    }
+
+    /* ─── FILTER BUTTONS ─── */
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 9px 18px;
+      border-radius: 4px;
+      border: 1px solid #1C1C1A;
+      background: transparent;
+      color: #1C1C1A;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .filter-btn:hover {
+      background-color: rgba(28, 28, 26, 0.08);
+    }
+
+    .filter-btn.active {
+      background-color: #1C1C1A;
+      color: #F2EDE6;
+    }
+
+    /* ─── MAP ─── */
+    #map {
+      width: 100%;
+      height: 460px;
+      border-top: 1px solid #1C1C1A;
+      border-bottom: 1px solid #1C1C1A;
+      display: block;
+    }
+
+    /* ─── RESULTS ─── */
+    .results-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 48px 96px;
+    }
+
+    .results-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .results-count {
+      font-size: 14px;
+      color: #888;
+    }
+
+    /* ─── LOADING / ERROR ─── */
+    .state-message {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 64px 24px;
+      color: #888;
+      font-size: 16px;
+    }
+
+    .state-message strong {
+      display: block;
+      font-weight: 700;
+      font-size: 18px;
+      color: #1C1C1A;
+      margin-bottom: 8px;
+    }
+
+    .loading-indicator {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #ddd;
+      border-top-color: #D4845A;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ─── VENUE GRID ─── */
+    .venues-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    /* ─── VENUE CARD ─── */
+    .venue-card {
+      background: #FFFFFF;
+      border: 1px solid #1C1C1A;
+      border-radius: 4px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      cursor: pointer;
+      transition: box-shadow 0.15s ease, transform 0.12s ease;
+    }
+
+    .venue-card:hover {
+      box-shadow: 0 6px 20px rgba(28, 28, 26, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .venue-card.card-highlighted {
+      border-color: #D4845A;
+      box-shadow: 0 0 0 2px #D4845A;
+    }
+
+    .venue-category-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #D4845A;
+    }
+
+    .venue-name {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      color: #1C1C1A;
+      line-height: 1.3;
+    }
+
+    .venue-stars-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .stars-visual {
+      color: #E8C84A;
+      font-size: 14px;
+      letter-spacing: 1px;
+      line-height: 1;
+    }
+
+    .rating-text {
+      font-size: 13px;
+      color: #777;
+    }
+
+    .venue-address {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.45;
+    }
+
+    .venue-status {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .venue-status.status-open   { color: #6B9E7A; }
+    .venue-status.status-closed { color: #b94040; }
+    .venue-status.status-unknown { color: #aaa; font-weight: 400; }
+
+    .venue-directions {
+      display: inline-block;
+      margin-top: 2px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #D4845A;
+      text-decoration: none;
+    }
+
+    .venue-directions:hover {
+      text-decoration: underline;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 0 20px;
+        height: 58px;
+      }
+
+      .nav-wordmark {
+        font-size: 18px;
+      }
+
+      .page-header {
+        padding: 40px 20px 28px;
+      }
+
+      #map {
+        height: 320px;
+      }
+
+      .results-section {
+        padding: 32px 20px 64px;
+      }
+
+      .venues-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAV ─── -->
+  <nav class="nav">
+    <a class="nav-wordmark" href="index.html">inthebigbed</a>
+    <a class="nav-back" href="index.html">← Back to home</a>
+  </nav>
+
+  <!-- ─── PAGE HEADER ─── -->
+  <div class="page-header">
+    <h1 class="page-heading">Dog-friendly Liverpool</h1>
+    <p class="page-sub">Pubs, bars, cafes and restaurants that actually welcome your dog.</p>
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="pub-bar">Pubs &amp; Bars</button>
+      <button class="filter-btn" data-filter="restaurant">Restaurants</button>
+      <button class="filter-btn" data-filter="cafe">Cafes</button>
+    </div>
+  </div>
+
+  <!-- ─── MAP ─── -->
+  <div id="map"></div>
+
+  <!-- ─── RESULTS ─── -->
+  <div class="results-section">
+    <div class="results-meta">
+      <span class="results-count" id="results-count"></span>
+    </div>
+    <div class="venues-grid" id="venues-grid">
+      <div class="state-message">
+        <span class="loading-indicator"></span>
+        Finding dog-friendly places in Liverpool…
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ─── CONFIG ─── */
+    const LIVERPOOL_CENTER = { lat: 53.4084, lng: -2.9916 };
+    const SEARCH_RADIUS    = 8000; // metres
+    const MAX_VENUES       = 20;
+
+    /* ─── STATE ─── */
+    let map;
+    let allVenues     = [];
+    let markers       = [];
+    let infoWindow;
+    let activeFilter  = 'all';
+
+    /* ─── MAP STYLE — warm/clean ─── */
+    const MAP_STYLES = [
+      { featureType: 'all',        elementType: 'labels.text.fill',   stylers: [{ color: '#4a4a48' }] },
+      { featureType: 'poi',        elementType: 'all',                 stylers: [{ visibility: 'off' }] },
+      { featureType: 'transit',    elementType: 'labels.icon',         stylers: [{ visibility: 'off' }] },
+      { featureType: 'road',       elementType: 'geometry.fill',       stylers: [{ color: '#ffffff' }] },
+      { featureType: 'road',       elementType: 'geometry.stroke',     stylers: [{ color: '#e0d8ce' }] },
+      { featureType: 'road.highway', elementType: 'geometry.fill',     stylers: [{ color: '#f7ede3' }] },
+      { featureType: 'road.highway', elementType: 'geometry.stroke',   stylers: [{ color: '#dcc8b8' }] },
+      { featureType: 'landscape',  elementType: 'geometry.fill',       stylers: [{ color: '#f5f0ea' }] },
+      { featureType: 'water',      elementType: 'geometry.fill',       stylers: [{ color: '#bdd5e0' }] },
+      { featureType: 'administrative', elementType: 'geometry.stroke', stylers: [{ color: '#c8c0b8' }] },
+    ];
+
+    /* ─── SEARCH DEFINITIONS ─── */
+    const SEARCHES = [
+      { query: 'dog friendly pub Liverpool',        filterKey: 'pub-bar',    label: 'Pub'        },
+      { query: 'dog friendly bar Liverpool',        filterKey: 'pub-bar',    label: 'Bar'        },
+      { query: 'dog friendly restaurant Liverpool', filterKey: 'restaurant', label: 'Restaurant' },
+      { query: 'dog friendly cafe Liverpool',       filterKey: 'cafe',       label: 'Café'       },
+    ];
+
+    /* ─── INIT MAP ─── */
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center:           LIVERPOOL_CENTER,
+        zoom:             13,
+        styles:           MAP_STYLES,
+        mapTypeControl:   false,
+        streetViewControl: false,
+        fullscreenControl: true,
+        zoomControlOptions: {
+          position: google.maps.ControlPosition.RIGHT_BOTTOM,
+        },
+      });
+
+      infoWindow = new google.maps.InfoWindow({ maxWidth: 240 });
+      runSearches();
+    }
+
+    /* ─── SEARCHES ─── */
+    function runSearches() {
+      const service   = new google.maps.places.PlacesService(map);
+      const seenIds   = new Set();
+      let completed   = 0;
+      let anyResults  = false;
+
+      SEARCHES.forEach(({ query, filterKey, label }) => {
+        service.textSearch(
+          { query, location: LIVERPOOL_CENTER, radius: SEARCH_RADIUS },
+          (results, status) => {
+            if (
+              status === google.maps.places.PlacesServiceStatus.OK &&
+              results && results.length
+            ) {
+              anyResults = true;
+              results.forEach(place => {
+                if (!seenIds.has(place.place_id)) {
+                  seenIds.add(place.place_id);
+                  allVenues.push({ ...place, filterKey, label });
+                }
+              });
+            }
+
+            completed++;
+            if (completed === SEARCHES.length) {
+              if (!anyResults) {
+                showError('Could not load venues. Please check the API key or try again.');
+                return;
+              }
+              // Sort by rating desc, cap at MAX_VENUES
+              allVenues = allVenues
+                .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+                .slice(0, MAX_VENUES);
+              renderAll();
+            }
+          }
+        );
+      });
+    }
+
+    /* ─── RENDER ALL ─── */
+    function renderAll() {
+      buildMarkers();
+      buildCards();
+    }
+
+    /* ─── MARKERS ─── */
+    function buildMarkers() {
+      markers.forEach(m => m.setMap(null));
+      markers = [];
+
+      getVisible().forEach(venue => {
+        const marker = new google.maps.Marker({
+          position: venue.geometry.location,
+          map,
+          title: venue.name,
+          icon: {
+            path:        google.maps.SymbolPath.CIRCLE,
+            scale:       9,
+            fillColor:   '#D4845A',
+            fillOpacity: 1,
+            strokeColor: '#1C1C1A',
+            strokeWeight: 1.5,
+          },
+        });
+
+        marker.addListener('click', () => {
+          infoWindow.setContent(infoWindowHtml(venue));
+          infoWindow.open(map, marker);
+          // Briefly highlight corresponding card
+          document.querySelectorAll('.venue-card').forEach(c => c.classList.remove('card-highlighted'));
+          const card = document.querySelector(`.venue-card[data-place-id="${venue.place_id}"]`);
+          if (card) {
+            card.classList.add('card-highlighted');
+            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        });
+
+        markers.push(marker);
+        venue._marker = marker;
+      });
+    }
+
+    function infoWindowHtml(v) {
+      const status = openStatus(v);
+      return `
+        <div style="font-family:'DM Sans',sans-serif;padding:6px 4px;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#D4845A;margin-bottom:4px;">${esc(v.label)}</div>
+          <div style="font-weight:700;font-size:14px;color:#1C1C1A;margin-bottom:4px;line-height:1.3;">${esc(v.name)}</div>
+          ${v.rating ? `<div style="font-size:13px;color:#777;">${starsText(v.rating)} ${v.rating}</div>` : ''}
+          <div style="font-size:12px;font-weight:700;margin-top:4px;color:${status.color};">${status.text}</div>
+        </div>`;
+    }
+
+    /* ─── CARDS ─── */
+    function buildCards() {
+      const grid    = document.getElementById('venues-grid');
+      const countEl = document.getElementById('results-count');
+      const visible = getVisible();
+
+      countEl.textContent = `${visible.length} place${visible.length !== 1 ? 's' : ''} found`;
+
+      if (!visible.length) {
+        grid.innerHTML = `<div class="state-message"><strong>No places found</strong>Try a different filter.</div>`;
+        return;
+      }
+
+      grid.innerHTML = visible.map(v => cardHtml(v)).join('');
+
+      // Wire up card → map pan
+      grid.querySelectorAll('.venue-card').forEach(card => {
+        card.addEventListener('click', e => {
+          if (e.target.tagName === 'A') return; // let directions link through
+          const id = card.dataset.placeId;
+          const venue = allVenues.find(v => v.place_id === id);
+          if (!venue || !venue._marker) return;
+          map.panTo(venue.geometry.location);
+          map.setZoom(15);
+          google.maps.event.trigger(venue._marker, 'click');
+          document.getElementById('map').scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+    }
+
+    function cardHtml(v) {
+      const status  = openStatus(v);
+      const address = v.vicinity || v.formatted_address || '';
+      const dirUrl  = `https://www.google.com/maps/dir/?api=1&destination_place_id=${v.place_id}&destination=${encodeURIComponent(v.name)}`;
+
+      return `
+        <div class="venue-card" data-place-id="${esc(v.place_id)}">
+          <div class="venue-category-tag">${esc(v.label)}</div>
+          <div class="venue-name">${esc(v.name)}</div>
+          ${v.rating ? `
+            <div class="venue-stars-row">
+              <span class="stars-visual">${starsText(v.rating)}</span>
+              <span class="rating-text">${v.rating}${v.user_ratings_total ? ` &nbsp;(${v.user_ratings_total.toLocaleString()} reviews)` : ''}</span>
+            </div>` : ''}
+          ${address ? `<div class="venue-address">${esc(address)}</div>` : ''}
+          <div class="venue-status ${status.cls}">${status.text}</div>
+          <a class="venue-directions" href="${dirUrl}" target="_blank" rel="noopener noreferrer">Get directions →</a>
+        </div>`;
+    }
+
+    /* ─── HELPERS ─── */
+    function getVisible() {
+      if (activeFilter === 'all') return allVenues;
+      return allVenues.filter(v => v.filterKey === activeFilter);
+    }
+
+    function openStatus(venue) {
+      if (!venue.opening_hours) return { cls: 'status-unknown', text: 'Hours not listed', color: '#aaa' };
+      return venue.opening_hours.open_now
+        ? { cls: 'status-open',   text: 'Open now',    color: '#6B9E7A' }
+        : { cls: 'status-closed', text: 'Closed now',  color: '#b94040' };
+    }
+
+    function starsText(rating) {
+      const r     = Math.round(rating);
+      const full  = Math.max(0, Math.min(5, r));
+      const empty = 5 - full;
+      return '★'.repeat(full) + '☆'.repeat(empty);
+    }
+
+    function esc(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function showError(msg) {
+      document.getElementById('venues-grid').innerHTML =
+        `<div class="state-message"><strong>Something went wrong</strong>${msg}</div>`;
+      document.getElementById('results-count').textContent = '';
+    }
+
+    /* ─── FILTER BUTTONS ─── */
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = btn.dataset.filter;
+        if (allVenues.length) {
+          infoWindow && infoWindow.close();
+          buildMarkers();
+          buildCards();
+        }
+      });
+    });
+  </script>
+
+  <!-- Load Maps JS API last — callback triggers initMap -->
+  <script
+    async
+    defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIaK7AvsGOUBhmRojkTG4bC-tPLUEIJBY&libraries=places&callback=initMap"
+  ></script>
+
+</body>
+</html>
