@@ -270,6 +270,56 @@
       text-decoration: underline;
     }
 
+    /* ─── HANDPICKED SECTION ─── */
+    .handpicked-section {
+      background-color: #F2EDE6;
+      border-bottom: 1px solid #1C1C1A;
+    }
+
+    .handpicked-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 56px 48px;
+    }
+
+    .handpicked-heading {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 900;
+      font-size: 28px;
+      color: #1C1C1A;
+      margin-bottom: 8px;
+    }
+
+    .handpicked-sub {
+      font-size: 15px;
+      color: #555;
+      margin-bottom: 36px;
+      line-height: 1.5;
+      max-width: 600px;
+    }
+
+    .handpicked-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .hp-card {
+      cursor: default;
+    }
+
+    .hp-card.hidden {
+      display: none;
+    }
+
+    .verified-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      color: #D4845A;
+      letter-spacing: 0.04em;
+    }
+
     /* ─── RESPONSIVE ─── */
     @media (max-width: 768px) {
       .nav {
@@ -318,6 +368,131 @@
       <button class="filter-btn" data-filter="cafe">Cafes</button>
     </div>
   </div>
+
+  <!-- ─── HANDPICKED SECTION ─── -->
+  <section class="handpicked-section" id="handpicked-section">
+    <div class="handpicked-inner">
+      <h2 class="handpicked-heading">Handpicked by us 🐾</h2>
+      <p class="handpicked-sub">Places we know personally welcome dogs — verified by the In The Big Bed team.</p>
+      <div class="handpicked-grid" id="handpicked-grid">
+
+        <div class="venue-card hp-card" data-filter="restaurant">
+          <span class="verified-badge">Locally verified 🐾</span>
+          <div class="venue-name">Duke Street Food and Drink Market</div>
+          <div class="venue-address">Duke Street, Liverpool</div>
+        </div>
+
+        <div class="venue-card hp-card" data-filter="restaurant">
+          <span class="verified-badge">Locally verified 🐾</span>
+          <div class="venue-name">Bao and Bap</div>
+          <div class="venue-address">Rodney Street, Liverpool</div>
+        </div>
+
+        <div class="venue-card hp-card" data-filter="pub-bar">
+          <span class="verified-badge">Locally verified 🐾</span>
+          <div class="venue-name">Brasco Lounge</div>
+          <div class="venue-address">Mann Island, Liverpool</div>
+        </div>
+
+        <div class="venue-card hp-card" data-filter="cafe">
+          <span class="verified-badge">Locally verified 🐾</span>
+          <div class="venue-name">The Quarter</div>
+          <div class="venue-address">Falkner Street, Liverpool</div>
+        </div>
+
+        <div class="venue-card hp-card" data-filter="pub-bar">
+          <span class="verified-badge">Locally verified 🐾</span>
+          <div class="venue-name">Dog and Collar</div>
+          <div class="venue-address">Hope Street, Liverpool</div>
+        </div>
+
+        <div class="venue-card hp-card" data-filter="restaurant">
+          <span class="verified-badge">Locally verified 🐾</span>
+          <div class="venue-name">Cosy Club</div>
+          <div class="venue-address">Paradise Street, Liverpool</div>
+        </div>
+
+        <div class="venue-card hp-card" data-filter="pub-bar">
+          <span class="verified-badge">Locally verified 🐾</span>
+          <div class="venue-name">Milo Lounge</div>
+          <div class="venue-address">Lark Lane, Liverpool</div>
+        </div>
+
+        <div class="venue-card hp-card" data-filter="pub-bar">
+          <span class="verified-badge">Locally verified 🐾</span>
+          <div class="venue-name">Ma Boyle's Alehouse and Eatery</div>
+          <div class="venue-address">Tower Gardens, Liverpool</div>
+        </div>
+
+        <div class="venue-card hp-card" data-filter="pub-bar">
+          <span class="verified-badge">Locally verified 🐾</span>
+          <div class="venue-name">The Wheelbarrow</div>
+          <div class="venue-address">Greenbank Lane, Liverpool</div>
+        </div>
+
+        <div class="venue-card hp-card" data-filter="pub-bar">
+          <span class="verified-badge">Locally verified 🐾</span>
+          <div class="venue-name">The Merchant</div>
+          <div class="venue-address">Slater Street, Liverpool</div>
+        </div>
+
+        <div class="venue-card hp-card" data-filter="pub-bar">
+          <span class="verified-badge">Locally verified 🐾</span>
+          <div class="venue-name">Kazimier Garden</div>
+          <div class="venue-address">Seel Street, Liverpool</div>
+        </div>
+
+        <div class="venue-card hp-card" data-filter="pub-bar">
+          <span class="verified-badge">Locally verified 🐾</span>
+          <div class="venue-name">Ten Streets Social</div>
+          <div class="venue-address">Regent Road, Liverpool</div>
+        </div>
+
+        <div class="venue-card hp-card" data-filter="restaurant">
+          <span class="verified-badge">Locally verified 🐾</span>
+          <div class="venue-name">Baltic Market</div>
+          <div class="venue-address">Stanhope Street, Liverpool</div>
+        </div>
+
+        <div class="venue-card hp-card" data-filter="cafe">
+          <span class="verified-badge">Locally verified 🐾</span>
+          <div class="venue-name">Derek's Coffee and Sandwiches</div>
+          <div class="venue-address">Lark Lane, Liverpool</div>
+        </div>
+
+        <div class="venue-card hp-card" data-filter="cafe">
+          <span class="verified-badge">Locally verified 🐾</span>
+          <div class="venue-name">Derek's Coffee and Sandwiches</div>
+          <div class="venue-address">Berry Street, Liverpool</div>
+        </div>
+
+        <div class="venue-card hp-card" data-filter="cafe">
+          <span class="verified-badge">Locally verified 🐾</span>
+          <div class="venue-name">Derek's Coffee and Sandwiches</div>
+          <div class="venue-address">Allerton Road, Liverpool</div>
+        </div>
+
+        <div class="venue-card hp-card" data-filter="cafe">
+          <span class="verified-badge">Locally verified 🐾</span>
+          <div class="venue-name">Derek's Coffee and Sandwiches</div>
+          <div class="venue-address">College Road, Crosby</div>
+        </div>
+
+        <div class="venue-card hp-card" data-filter="pub-bar">
+          <span class="verified-badge">Locally verified 🐾</span>
+          <div class="venue-name">The Halton Castle</div>
+          <div class="venue-address">Mill Lane, Liverpool</div>
+        </div>
+
+        <div class="venue-card hp-card" data-filter="pub-bar">
+          <span class="verified-badge">Locally verified 🐾</span>
+          <div class="venue-name">Eden Bar</div>
+          <div class="venue-address">Eaton Road, Liverpool</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
 
   <!-- ─── MAP ─── -->
   <div id="map"></div>
@@ -573,6 +748,17 @@
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         activeFilter = btn.dataset.filter;
+
+        // Filter handpicked cards
+        const hpCards = document.querySelectorAll('.hp-card');
+        hpCards.forEach(card => {
+          const matches = activeFilter === 'all' || card.dataset.filter === activeFilter;
+          card.classList.toggle('hidden', !matches);
+        });
+        // Hide the whole handpicked section if nothing matches
+        const anyHpVisible = [...hpCards].some(c => !c.classList.contains('hidden'));
+        document.getElementById('handpicked-section').style.display = anyHpVisible ? '' : 'none';
+
         if (allVenues.length) {
           infoWindow && infoWindow.close();
           buildMarkers();
