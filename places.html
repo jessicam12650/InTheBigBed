@@ -320,6 +320,36 @@
       letter-spacing: 0.04em;
     }
 
+    /* ─── COMBINED SECTION ─── */
+    .combined-heading {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 900;
+      font-size: 28px;
+      color: #1C1C1A;
+      margin-bottom: 28px;
+    }
+
+    .df-badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #6B9E7A;
+    }
+
+    .loading-inline {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 24px;
+    }
+
+    .static-card.hidden,
+    .google-card.hidden {
+      display: none;
+    }
+
     /* ─── RESPONSIVE ─── */
     @media (max-width: 768px) {
       .nav {
@@ -363,7 +393,7 @@
     <p class="page-sub">Pubs, bars, cafes and restaurants that actually welcome your dog.</p>
     <div class="filters">
       <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="pub-bar">Pubs &amp; Bars</button>
+      <button class="filter-btn" data-filter="pub-bar">Pubs and Bars</button>
       <button class="filter-btn" data-filter="restaurant">Restaurants</button>
     </div>
   </div>
@@ -418,17 +448,14 @@
     </div>
   </section>
 
-  <!-- ─── RESULTS ─── -->
+  <!-- ─── COMBINED SECTION ─── -->
   <div class="results-section">
-    <div class="results-meta">
-      <span class="results-count" id="results-count"></span>
+    <h2 class="combined-heading">Dog-friendly bars and restaurants in Liverpool</h2>
+    <div class="loading-inline" id="loading-inline">
+      <span class="loading-indicator"></span>
+      <span>Finding more places…</span>
     </div>
-    <div class="venues-grid" id="venues-grid">
-      <div class="state-message">
-        <span class="loading-indicator"></span>
-        Finding dog-friendly places in Liverpool…
-      </div>
-    </div>
+    <div class="venues-grid" id="venues-grid"></div>
   </div>
 
   <script>
@@ -464,6 +491,66 @@
       { query: 'dog friendly bar Liverpool',        filterKey: 'pub-bar',    label: 'Bar'        },
       { query: 'dog friendly restaurant Liverpool', filterKey: 'restaurant', label: 'Restaurant' },
       { query: 'dog friendly cafe Liverpool',       filterKey: 'restaurant', label: 'Café'       },
+    ];
+
+    /* ─── MANUALLY CURATED VENUES ─── */
+    const STATIC_VENUES = [
+      { name: "The Ship and Mitre",             address: "133 Dale St, Liverpool L2",             filterKey: 'pub-bar'    },
+      { name: "The Dead Crafty Beer Company",   address: "Dale St, City Centre, Liverpool",        filterKey: 'pub-bar'    },
+      { name: "The Philharmonic Dining Rooms",  address: "36 Hope St, Liverpool L1",               filterKey: 'pub-bar'    },
+      { name: "The Hope and Anchor",            address: "Maryland St, Liverpool L1",              filterKey: 'pub-bar'    },
+      { name: "Ma Boyle's Alehouse and Eatery", address: "Tower Buildings, Liverpool L3",          filterKey: 'pub-bar'    },
+      { name: "Cains Brewery",                  address: "Stanhope St, Liverpool L8",              filterKey: 'pub-bar'    },
+      { name: "Salt Dog Slims",                 address: "Rainford Gardens, Liverpool L2",         filterKey: 'pub-bar'    },
+      { name: "Pins Social Club",               address: "Duke St, Liverpool L1",                  filterKey: 'pub-bar'    },
+      { name: "Slug and Lettuce",               address: "City Centre, Liverpool L1",              filterKey: 'pub-bar'    },
+      { name: "The Club House",                 address: "City Centre, Liverpool",                 filterKey: 'pub-bar'    },
+      { name: "Kazimier Garden",                address: "32 Seel St, Liverpool L1",               filterKey: 'pub-bar'    },
+      { name: "BrewDog Liverpool",              address: "Colquitt St, Liverpool L1",              filterKey: 'pub-bar'    },
+      { name: "Buyers Club",                    address: "Hardman St, Liverpool L1",               filterKey: 'pub-bar'    },
+      { name: "Baltic Fleet",                   address: "33A Wapping, Liverpool L1",              filterKey: 'pub-bar'    },
+      { name: "Baltic Social",                  address: "Baltic Triangle, Liverpool",             filterKey: 'pub-bar'    },
+      { name: "Brasco Lounge",                  address: "Royal Albert Dock, Liverpool L3",        filterKey: 'pub-bar'    },
+      { name: "Punch Tarmey's",                 address: "City Centre, Liverpool",                 filterKey: 'pub-bar'    },
+      { name: "Shenanigans",                    address: "City Centre, Liverpool",                 filterKey: 'pub-bar'    },
+      { name: "The Lodge",                      address: "33 Lark Lane, Liverpool L17",            filterKey: 'pub-bar'    },
+      { name: "The Bookbinder",                 address: "Lark Lane, Liverpool L17",               filterKey: 'pub-bar'    },
+      { name: "Milo Lounge",                    address: "Lark Lane, Liverpool L17",               filterKey: 'pub-bar'    },
+      { name: "The Caledonia",                  address: "22 Caledonia St, Liverpool L7",          filterKey: 'pub-bar'    },
+      { name: "Peter Kavanagh's",               address: "2-6 Egerton St, Liverpool L8",           filterKey: 'pub-bar'    },
+      { name: "Dovedale Towers",                address: "60 Penny Lane, Liverpool L18",           filterKey: 'pub-bar'    },
+      { name: "The Storrsdale",                 address: "Storrsdale Rd, Liverpool L18",           filterKey: 'pub-bar'    },
+      { name: "The George Crosby",              address: "1 Moor Lane, Crosby, Liverpool L23",     filterKey: 'pub-bar'    },
+      { name: "The Freshfield",                 address: "Formby, Liverpool L37",                  filterKey: 'pub-bar'    },
+      { name: "Heatons Bridge",                 address: "Scarisbrick",                            filterKey: 'pub-bar'    },
+      { name: "The Dandelion Tavern",           address: "Cronton, Widnes",                        filterKey: 'pub-bar'    },
+      { name: "Doctor Duncans",                 address: "St Johns Lane, Liverpool L1",            filterKey: 'pub-bar'    },
+      { name: "The Pen Factory",                address: "Hope St, Liverpool L1",                  filterKey: 'pub-bar'    },
+      { name: "The One O'Clock Gun",            address: "Royal Albert Dock, Liverpool L3",        filterKey: 'pub-bar'    },
+      { name: "The Dog House",                  address: "15-17 Church Rd, Liverpool L15",         filterKey: 'pub-bar'    },
+      { name: "The Head of Steam",              address: "85 Hanover St, Liverpool L1",            filterKey: 'pub-bar'    },
+      { name: "The Farmers Arms",               address: "Wirral",                                 filterKey: 'pub-bar'    },
+      { name: "Lock and Quay",                  address: "2 Irlam Road, Bootle, Liverpool L20",    filterKey: 'pub-bar'    },
+      { name: "The Royal Standard",             address: "West Derby, Liverpool",                  filterKey: 'pub-bar'    },
+      { name: "White Hart",                     address: "23 Hope Street, Liverpool L1",           filterKey: 'pub-bar'    },
+      { name: "Queen of Hope Street",           address: "1-1A Myrtle Street, Liverpool L7",       filterKey: 'pub-bar'    },
+      { name: "Swan",                           address: "86 Wood Street, Liverpool L1",           filterKey: 'pub-bar'    },
+      { name: "Mayflower",                      address: "34 Pilgrim Street, Liverpool L1",        filterKey: 'pub-bar'    },
+      { name: "Blondies",                       address: "Aigburth, Liverpool",                    filterKey: 'pub-bar'    },
+      { name: "Trap and Hatch",                 address: "135 South Road, Waterloo, Liverpool L22",filterKey: 'pub-bar'    },
+      { name: "Cobden",                         address: "89 Quarry Street, Woolton, Liverpool L25",filterKey: 'pub-bar'   },
+      { name: "Three Piggies",                  address: "Allerton Road, Liverpool",               filterKey: 'pub-bar'    },
+      { name: "Queens Arms",                    address: "Victoria Street, Liverpool",             filterKey: 'pub-bar'    },
+      { name: "McNasty's",                      address: "Seel Street, Liverpool",                 filterKey: 'pub-bar'    },
+      { name: "Frederiks",                      address: "Hope Street, Liverpool",                 filterKey: 'pub-bar'    },
+      { name: "The Shandon Bells",              address: "Hope Street, Liverpool",                 filterKey: 'pub-bar'    },
+      { name: "Cosy Club",                      address: "Liverpool ONE, Liverpool L1",            filterKey: 'restaurant' },
+      { name: "The Refinery Liverpool",         address: "City Centre, Liverpool",                 filterKey: 'restaurant' },
+      { name: "The Monro",                      address: "Duke St, Liverpool L1",                  filterKey: 'restaurant' },
+      { name: "Pho Castle Street",              address: "Castle St, Liverpool L2",                filterKey: 'restaurant' },
+      { name: "Rhubarb",                        address: "Lark Lane area, Liverpool",              filterKey: 'restaurant' },
+      { name: "Permit Room by Dishoom",         address: "Liverpool City Centre",                  filterKey: 'restaurant' },
+      { name: "Mowgli",                         address: "Bold Street and Water Street, Liverpool",filterKey: 'restaurant' },
     ];
 
     /* ─── INIT MAP ─── */
@@ -579,26 +666,45 @@
         </div>`;
     }
 
-    /* ─── CARDS ─── */
+    /* ─── STATIC CARDS ─── */
+    function renderStaticVenues() {
+      const grid = document.getElementById('venues-grid');
+      const html = STATIC_VENUES.map(v => {
+        const label  = v.filterKey === 'pub-bar' ? 'Pub / Bar' : 'Restaurant';
+        const dirUrl = `https://www.google.com/maps/search/${encodeURIComponent(v.name + ' ' + v.address)}`;
+        return `
+          <div class="venue-card static-card" data-filter="${v.filterKey}">
+            <div class="venue-category-tag">${label}</div>
+            <div class="venue-name">${esc(v.name)}</div>
+            <div class="venue-address">${esc(v.address)}</div>
+            <span class="df-badge">Dog-friendly</span>
+            <a class="venue-directions" href="${dirUrl}" target="_blank" rel="noopener noreferrer">Get directions →</a>
+          </div>`;
+      }).join('');
+      grid.insertAdjacentHTML('beforeend', html);
+    }
+
+    /* ─── GOOGLE CARDS ─── */
     function buildCards() {
       const grid    = document.getElementById('venues-grid');
-      const countEl = document.getElementById('results-count');
       const visible = getVisible();
 
-      countEl.textContent = `${visible.length} place${visible.length !== 1 ? 's' : ''} found`;
+      // Remove previous google-card run without touching static cards
+      grid.querySelectorAll('.google-card').forEach(c => c.remove());
 
-      if (!visible.length) {
-        grid.innerHTML = `<div class="state-message"><strong>No places found</strong>Try a different filter.</div>`;
-        return;
+      // Hide loading indicator
+      const loadingEl = document.getElementById('loading-inline');
+      if (loadingEl) loadingEl.style.display = 'none';
+
+      if (visible.length) {
+        grid.insertAdjacentHTML('beforeend', visible.map(v => googleCardHtml(v)).join(''));
       }
 
-      grid.innerHTML = visible.map(v => cardHtml(v)).join('');
-
-      // Wire up card → map pan
-      grid.querySelectorAll('.venue-card').forEach(card => {
+      // Wire up card → map pan (google cards only)
+      grid.querySelectorAll('.google-card').forEach(card => {
         card.addEventListener('click', e => {
-          if (e.target.tagName === 'A') return; // let directions link through
-          const id = card.dataset.placeId;
+          if (e.target.tagName === 'A') return;
+          const id    = card.dataset.placeId;
           const venue = allVenues.find(v => v.place_id === id);
           if (!venue || !venue._marker) return;
           map.panTo(venue.geometry.location);
@@ -609,13 +715,13 @@
       });
     }
 
-    function cardHtml(v) {
+    function googleCardHtml(v) {
       const status  = openStatus(v);
       const address = v.vicinity || v.formatted_address || '';
       const dirUrl  = `https://www.google.com/maps/dir/?api=1&destination_place_id=${v.place_id}&destination=${encodeURIComponent(v.name)}`;
 
       return `
-        <div class="venue-card" data-place-id="${esc(v.place_id)}">
+        <div class="venue-card google-card" data-place-id="${esc(v.place_id)}">
           <div class="venue-category-tag">${esc(v.label)}</div>
           <div class="venue-name">${esc(v.name)}</div>
           ${v.rating ? `
@@ -698,9 +804,9 @@
     }
 
     function showError(msg) {
-      document.getElementById('venues-grid').innerHTML =
-        `<div class="state-message"><strong>Something went wrong</strong>${msg}</div>`;
-      document.getElementById('results-count').textContent = '';
+      const loadingEl = document.getElementById('loading-inline');
+      if (loadingEl) loadingEl.style.display = 'none';
+      // Static cards remain; just silently skip google results on error
     }
 
     /* ─── FILTER BUTTONS ─── */
@@ -716,9 +822,14 @@
           const matches = activeFilter === 'all' || card.dataset.filter === activeFilter;
           card.classList.toggle('hidden', !matches);
         });
-        // Hide the whole handpicked section if nothing matches
         const anyHpVisible = [...hpCards].some(c => !c.classList.contains('hidden'));
         document.getElementById('handpicked-section').style.display = anyHpVisible ? '' : 'none';
+
+        // Filter static cards in combined section
+        document.querySelectorAll('.static-card').forEach(card => {
+          const matches = activeFilter === 'all' || card.dataset.filter === activeFilter;
+          card.classList.toggle('hidden', !matches);
+        });
 
         if (allVenues.length) {
           infoWindow && infoWindow.close();
@@ -727,6 +838,9 @@
         }
       });
     });
+
+    // Populate static cards immediately
+    renderStaticVenues();
   </script>
 
   <!-- Load Maps JS API last — callback triggers initMap -->
