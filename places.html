@@ -569,7 +569,7 @@
 
       infoWindow = new google.maps.InfoWindow({ maxWidth: 240 });
       runSearches();
-      addStaticMarkers();
+      enrichStaticVenues();
     }
 
     /* ─── SEARCHES ─── */
@@ -656,42 +656,92 @@
       });
     }
 
-    /* ─── STATIC VENUE PINS (green) ─── */
-    function addStaticMarkers() {
+    /* ─── STATIC VENUE ENRICHMENT (green pins + full card details) ─── */
+    function enrichStaticVenues() {
       const service = new google.maps.places.PlacesService(map);
-      STATIC_VENUES.forEach(venue => {
+
+      STATIC_VENUES.forEach((venue, idx) => {
         service.findPlaceFromQuery(
-          { query: venue.name + ', ' + venue.address, fields: ['geometry', 'name'] },
-          (results, status) => {
+          { query: venue.name + ', ' + venue.address, fields: ['place_id', 'geometry'] },
+          (results, fStatus) => {
+            const card = document.getElementById('sc-' + idx);
+
             if (
-              status !== google.maps.places.PlacesServiceStatus.OK ||
-              !results || !results.length ||
-              !results[0].geometry
-            ) return;
+              fStatus !== google.maps.places.PlacesServiceStatus.OK ||
+              !results || !results.length
+            ) {
+              if (card) {
+                const s = card.querySelector('.venue-status');
+                s.className = 'venue-status status-unknown';
+                s.textContent = 'Hours not listed';
+              }
+              return;
+            }
 
-            const marker = new google.maps.Marker({
-              position: results[0].geometry.location,
-              map,
-              title: venue.name,
-              icon: {
-                path:        google.maps.SymbolPath.CIRCLE,
-                scale:       9,
-                fillColor:   '#6B9E7A',
-                fillOpacity: 1,
-                strokeColor: '#1C1C1A',
-                strokeWeight: 1.5,
-              },
-            });
+            const placeId   = results[0].place_id;
+            const fallbackLoc = results[0].geometry && results[0].geometry.location;
 
-            marker.addListener('click', () => {
-              infoWindow.setContent(`
-                <div style="font-family:'DM Sans',sans-serif;padding:6px 4px;">
-                  <div style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#6B9E7A;margin-bottom:4px;">Dog-friendly 🐾</div>
-                  <div style="font-weight:700;font-size:14px;color:#1C1C1A;line-height:1.3;">${esc(venue.name)}</div>
-                  <div style="font-size:12px;color:#555;margin-top:4px;">${esc(venue.address)}</div>
-                </div>`);
-              infoWindow.open(map, marker);
-            });
+            service.getDetails(
+              { placeId, fields: ['opening_hours', 'rating', 'user_ratings_total', 'geometry'] },
+              (place, dStatus) => {
+                const ok  = dStatus === google.maps.places.PlacesServiceStatus.OK;
+                const loc = (ok && place && place.geometry && place.geometry.location)
+                  ? place.geometry.location : fallbackLoc;
+                const hours      = ok && place ? place.opening_hours       : null;
+                const rating     = ok && place ? place.rating              : null;
+                const totalRatings = ok && place ? place.user_ratings_total : null;
+                const status = openStatus({ opening_hours: hours });
+                const dirUrl = 'https://www.google.com/maps/dir/?api=1&destination_place_id='
+                  + placeId + '&destination=' + encodeURIComponent(venue.name);
+
+                // Update placeholder card
+                if (card) {
+                  card.querySelector('.venue-directions').href = dirUrl;
+                  const s = card.querySelector('.venue-status');
+                  s.className = 'venue-status ' + status.cls;
+                  s.textContent = status.text;
+
+                  if (rating && !card.querySelector('.venue-stars-row')) {
+                    card.querySelector('.venue-name').insertAdjacentHTML('afterend',
+                      '<div class="venue-stars-row">'
+                      + '<span class="stars-visual">' + starsText(rating) + '</span>'
+                      + '<span class="rating-text">' + rating
+                      + (totalRatings ? ' &nbsp;(' + totalRatings.toLocaleString() + ' reviews)' : '')
+                      + '</span></div>');
+                  }
+                }
+
+                // Green map marker with full popup
+                if (loc) {
+                  const marker = new google.maps.Marker({
+                    position: loc,
+                    map,
+                    title: venue.name,
+                    icon: {
+                      path:        google.maps.SymbolPath.CIRCLE,
+                      scale:       9,
+                      fillColor:   '#6B9E7A',
+                      fillOpacity: 1,
+                      strokeColor: '#1C1C1A',
+                      strokeWeight: 1.5,
+                    },
+                  });
+
+                  marker.addListener('click', () => {
+                    infoWindow.setContent(
+                      '<div style="font-family:\'DM Sans\',sans-serif;padding:6px 4px;">'
+                      + '<div style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#6B9E7A;margin-bottom:4px;">Dog-friendly 🐾</div>'
+                      + '<div style="font-weight:700;font-size:14px;color:#1C1C1A;margin-bottom:4px;line-height:1.3;">' + esc(venue.name) + '</div>'
+                      + '<div style="font-size:12px;color:#555;margin-bottom:4px;">' + esc(venue.address) + '</div>'
+                      + (rating ? '<div style="font-size:13px;color:#777;margin-bottom:4px;">' + starsText(rating) + ' ' + rating + '</div>' : '')
+                      + '<div style="font-size:12px;font-weight:700;color:' + status.color + ';">' + status.text + '</div>'
+                      + '</div>'
+                    );
+                    infoWindow.open(map, marker);
+                  });
+                }
+              }
+            );
           }
         );
       });
@@ -708,22 +758,23 @@
         </div>`;
     }
 
-    /* ─── STATIC CARDS ─── */
+    /* ─── STATIC CARDS (placeholder — enriched by enrichStaticVenues once Maps API loads) ─── */
     function renderStaticVenues() {
       const grid = document.getElementById('venues-grid');
-      const html = STATIC_VENUES.map(v => {
+      STATIC_VENUES.forEach((v, idx) => {
         const label  = v.filterKey === 'pub-bar' ? 'Pub / Bar' : 'Restaurant';
-        const dirUrl = `https://www.google.com/maps/search/${encodeURIComponent(v.name + ' ' + v.address)}`;
-        return `
-          <div class="venue-card static-card" data-filter="${v.filterKey}">
-            <div class="venue-category-tag">${label}</div>
-            <div class="venue-name">${esc(v.name)}</div>
-            <div class="venue-address">${esc(v.address)}</div>
-            <span class="df-badge">Dog-friendly</span>
-            <a class="venue-directions" href="${dirUrl}" target="_blank" rel="noopener noreferrer">Get directions →</a>
-          </div>`;
-      }).join('');
-      grid.insertAdjacentHTML('beforeend', html);
+        const dirUrl = 'https://www.google.com/maps/search/' + encodeURIComponent(v.name + ' ' + v.address);
+        grid.insertAdjacentHTML('beforeend',
+          '<div class="venue-card static-card" id="sc-' + idx + '" data-filter="' + v.filterKey + '">'
+          + '<div class="venue-category-tag">' + label + '</div>'
+          + '<div class="venue-name">' + esc(v.name) + '</div>'
+          + '<div class="venue-address">' + esc(v.address) + '</div>'
+          + '<span class="df-badge">Dog-friendly 🐾</span>'
+          + '<div class="venue-status status-unknown">Loading hours\u2026</div>'
+          + '<a class="venue-directions" href="' + dirUrl + '" target="_blank" rel="noopener noreferrer">Get directions \u2192</a>'
+          + '</div>'
+        );
+      });
     }
 
     /* ─── GOOGLE CARDS ─── */
