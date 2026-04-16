@@ -376,6 +376,15 @@
       color: #1C1C1A;
     }
 
+    .waitlist-error {
+      display: none;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      color: #b94040;
+      margin-top: 12px;
+    }
+
     /* ─── FOOTER ─── */
     .footer {
       background-color: #1C1C1A;
@@ -640,6 +649,7 @@
       <button class="btn-waitlist-submit" type="submit">Get early access</button>
     </form>
     <p class="waitlist-success" id="waitlist-success">You're in. 🐾 Biscuit says thank you.</p>
+    <p class="waitlist-error" id="waitlist-error">Something went wrong — please try again.</p>
   </section>
 
   <!-- ─── FOOTER ─── -->
@@ -653,16 +663,79 @@
   </footer>
 
   <script>
-    // Form submit — show success message
+    // Mailchimp JSONP signup — works client-side without CORS issues.
+    // Uses the /subscribe/post-json endpoint (same as Mailchimp's own embeddable forms).
+    // u = account user ID. If signups aren't appearing in Mailchimp, verify this value
+    // by going to Audience → Signup forms → Embedded forms and copying the u= parameter
+    // from the form action URL.
+    var MC_U      = '22462b9c36f83e83f971fb73c702c993';
+    var MC_ID     = 'd43c188b80';
+    var MC_SERVER = 'us9';
+
+    function subscribeToMailchimp(email) {
+      return new Promise(function (resolve, reject) {
+        var cbName = 'mc_cb_' + Date.now();
+        var timer;
+
+        function cleanup() {
+          delete window[cbName];
+          clearTimeout(timer);
+          var s = document.getElementById('mc_jsonp');
+          if (s) s.parentNode.removeChild(s);
+        }
+
+        window[cbName] = function (data) {
+          cleanup();
+          if (data && data.result === 'success') {
+            resolve();
+          } else {
+            reject(new Error(data ? data.msg : 'Unknown error'));
+          }
+        };
+
+        timer = setTimeout(function () {
+          cleanup();
+          reject(new Error('timeout'));
+        }, 8000);
+
+        var url = 'https://' + MC_SERVER + '.list-manage.com/subscribe/post-json' +
+          '?u='     + encodeURIComponent(MC_U) +
+          '&id='    + encodeURIComponent(MC_ID) +
+          '&EMAIL=' + encodeURIComponent(email) +
+          '&c='     + cbName;
+
+        var script = document.createElement('script');
+        script.id  = 'mc_jsonp';
+        script.src = url;
+        script.onerror = function () { cleanup(); reject(new Error('network')); };
+        document.head.appendChild(script);
+      });
+    }
+
     document.getElementById('waitlist-form').addEventListener('submit', function (e) {
       e.preventDefault();
-      var input = document.getElementById('email-input');
-      if (!input.value || !input.validity.valid) {
-        input.focus();
-        return;
-      }
-      this.style.display = 'none';
-      document.getElementById('waitlist-success').style.display = 'block';
+
+      var input   = document.getElementById('email-input');
+      var btn     = this.querySelector('button[type="submit"]');
+      var errEl   = document.getElementById('waitlist-error');
+
+      if (!input.value || !input.validity.valid) { input.focus(); return; }
+
+      errEl.style.display = 'none';
+      btn.disabled        = true;
+      btn.textContent     = 'Joining…';
+
+      var form = this;
+      subscribeToMailchimp(input.value)
+        .then(function () {
+          form.style.display = 'none';
+          document.getElementById('waitlist-success').style.display = 'block';
+        })
+        .catch(function () {
+          errEl.style.display = 'block';
+          btn.disabled        = false;
+          btn.textContent     = 'Get early access';
+        });
     });
   </script>
 
