@@ -385,6 +385,106 @@
       margin-top: 12px;
     }
 
+    /* ─── MAILCHIMP FORM OVERRIDES ─── */
+    #mc_embed_signup {
+      background: transparent !important;
+      width: auto !important;
+      clear: none !important;
+    }
+
+    #mc_embed_signup form {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    #mc_embed_signup h2,
+    #mc_embed_signup .indicates-required,
+    #mc_embed_signup label {
+      display: none !important;
+    }
+
+    #mc_embed_signup_scroll {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      max-width: 520px;
+    }
+
+    #mc_embed_signup .mc-field-group {
+      flex: 1 1 auto;
+      min-width: 200px;
+      padding: 0 !important;
+      min-height: unset !important;
+    }
+
+    #mc_embed_signup .clear {
+      flex: 0 0 auto;
+      display: block !important;
+    }
+
+    #mc_embed_signup #mce-responses {
+      flex: 0 0 100%;
+      order: 10;
+      padding: 0 !important;
+      margin: 0 !important;
+      overflow: visible !important;
+    }
+
+    #mc_embed_signup .response {
+      font-family: 'DM Sans', sans-serif !important;
+      font-weight: 700 !important;
+      font-size: 15px !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      top: 0 !important;
+    }
+
+    #mc_embed_signup #mce-error-response   { color: #b94040 !important; }
+    #mc_embed_signup #mce-success-response { color: #6B9E7A !important; }
+
+    #mc_embed_signup #mce-EMAIL {
+      width: 100% !important;
+      border: 2px solid #1C1C1A !important;
+      background: #FFFFFF !important;
+      padding: 14px 16px !important;
+      font-size: 16px !important;
+      font-family: 'DM Sans', sans-serif !important;
+      border-radius: 4px !important;
+      color: #1C1C1A !important;
+      outline: none !important;
+      box-shadow: none !important;
+      height: auto !important;
+      margin: 0 !important;
+      -webkit-appearance: none !important;
+    }
+
+    #mc_embed_signup #mce-EMAIL::placeholder { color: #aaa !important; }
+    #mc_embed_signup #mce-EMAIL:focus { border-color: #D4845A !important; }
+
+    #mc_embed_signup #mc-embedded-subscribe {
+      background-color: #1C1C1A !important;
+      color: #F2EDE6 !important;
+      font-family: 'DM Sans', sans-serif !important;
+      font-weight: 700 !important;
+      font-size: 16px !important;
+      border: none !important;
+      border-radius: 4px !important;
+      padding: 14px 24px !important;
+      cursor: pointer !important;
+      height: auto !important;
+      width: auto !important;
+      margin: 0 !important;
+      line-height: 1 !important;
+      white-space: nowrap !important;
+      transition: opacity 0.15s ease !important;
+      -webkit-appearance: none !important;
+    }
+
+    #mc_embed_signup #mc-embedded-subscribe:hover {
+      opacity: 0.85 !important;
+      background-color: #1C1C1A !important;
+    }
+
     /* ─── FOOTER ─── */
     .footer {
       background-color: #1C1C1A;
@@ -500,6 +600,19 @@
       .btn-waitlist-submit {
         width: 100%;
         text-align: center;
+      }
+
+      #mc_embed_signup_scroll {
+        max-width: 100%;
+      }
+
+      #mc_embed_signup .mc-field-group,
+      #mc_embed_signup .clear {
+        flex: 0 0 100%;
+      }
+
+      #mc_embed_signup #mc-embedded-subscribe {
+        width: 100% !important;
       }
 
       .footer {
@@ -637,19 +750,32 @@
     <p class="waitlist-sub">
       Join the waitlist and get early access before we launch. No spam. Just your dog's new favourite app.
     </p>
-    <form class="waitlist-form" id="waitlist-form" novalidate>
-      <input
-        class="waitlist-input"
-        type="email"
-        id="email-input"
-        placeholder="Your email address"
-        autocomplete="email"
-        required
-      />
-      <button class="btn-waitlist-submit" type="submit">Get early access</button>
-    </form>
-    <p class="waitlist-success" id="waitlist-success">You're in. 🐾 Biscuit says thank you.</p>
-    <p class="waitlist-error" id="waitlist-error">Something went wrong — please try again.</p>
+    <div id="mc_embed_signup">
+      <form action="https://hotmail.us9.list-manage.com/subscribe/post?u=229fdd0eb0fd96b25d7441643&amp;id=d43c188b80&amp;f_id=0019cee1f0"
+            method="post"
+            id="mc-embedded-subscribe-form"
+            name="mc-embedded-subscribe-form"
+            class="validate"
+            target="_blank">
+        <div id="mc_embed_signup_scroll">
+          <div class="mc-field-group">
+            <input type="email" name="EMAIL" class="required email" id="mce-EMAIL"
+                   placeholder="Your email address" required="" value="">
+          </div>
+          <div id="mce-responses">
+            <div class="response" id="mce-error-response" style="display:none;"></div>
+            <div class="response" id="mce-success-response" style="display:none;"></div>
+          </div>
+          <div aria-hidden="true" style="position:absolute;left:-5000px;">
+            <input type="text" name="b_229fdd0eb0fd96b25d7441643_d43c188b80" tabindex="-1" value="">
+          </div>
+          <div class="clear">
+            <input type="submit" name="subscribe" id="mc-embedded-subscribe"
+                   class="button" value="Get early access">
+          </div>
+        </div>
+      </form>
+    </div>
   </section>
 
   <!-- ─── FOOTER ─── -->
@@ -662,81 +788,15 @@
     </div>
   </footer>
 
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
   <script>
-    // Mailchimp JSONP signup — works client-side without CORS issues.
-    // Uses the /subscribe/post-json endpoint (same as Mailchimp's own embeddable forms).
-    // u = account user ID. If signups aren't appearing in Mailchimp, verify this value
-    // by going to Audience → Signup forms → Embedded forms and copying the u= parameter
-    // from the form action URL.
-    var MC_U      = '22462b9c36f83e83f971fb73c702c993';
-    var MC_ID     = 'd43c188b80';
-    var MC_SERVER = 'us9';
-
-    function subscribeToMailchimp(email) {
-      return new Promise(function (resolve, reject) {
-        var cbName = 'mc_cb_' + Date.now();
-        var timer;
-
-        function cleanup() {
-          delete window[cbName];
-          clearTimeout(timer);
-          var s = document.getElementById('mc_jsonp');
-          if (s) s.parentNode.removeChild(s);
-        }
-
-        window[cbName] = function (data) {
-          cleanup();
-          if (data && data.result === 'success') {
-            resolve();
-          } else {
-            reject(new Error(data ? data.msg : 'Unknown error'));
-          }
-        };
-
-        timer = setTimeout(function () {
-          cleanup();
-          reject(new Error('timeout'));
-        }, 8000);
-
-        var url = 'https://' + MC_SERVER + '.list-manage.com/subscribe/post-json' +
-          '?u='     + encodeURIComponent(MC_U) +
-          '&id='    + encodeURIComponent(MC_ID) +
-          '&EMAIL=' + encodeURIComponent(email) +
-          '&c='     + cbName;
-
-        var script = document.createElement('script');
-        script.id  = 'mc_jsonp';
-        script.src = url;
-        script.onerror = function () { cleanup(); reject(new Error('network')); };
-        document.head.appendChild(script);
-      });
-    }
-
-    document.getElementById('waitlist-form').addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      var input   = document.getElementById('email-input');
-      var btn     = this.querySelector('button[type="submit"]');
-      var errEl   = document.getElementById('waitlist-error');
-
-      if (!input.value || !input.validity.valid) { input.focus(); return; }
-
-      errEl.style.display = 'none';
-      btn.disabled        = true;
-      btn.textContent     = 'Joining…';
-
-      var form = this;
-      subscribeToMailchimp(input.value)
-        .then(function () {
-          form.style.display = 'none';
-          document.getElementById('waitlist-success').style.display = 'block';
-        })
-        .catch(function () {
-          errEl.style.display = 'block';
-          btn.disabled        = false;
-          btn.textContent     = 'Get early access';
-        });
-    });
+    (function($) {
+      window.fnames = new Array();
+      window.ftypes = new Array();
+      fnames[0] = 'EMAIL'; ftypes[0] = 'email';
+    }(jQuery));
+    var $mcj = jQuery.noConflict(true);
   </script>
 
 </body>
