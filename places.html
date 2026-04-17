@@ -399,6 +399,9 @@
       });
       markers[v.id] = mk;
 
+      /* Respect any filter already applied when this marker is (re-)created */
+      if (activeFilter !== 'all' && v.cat !== activeFilter) mk.setVisible(false);
+
       mk.addListener('click', function() {
         const stars = rating ? '★'.repeat(Math.min(5, Math.round(rating))) : '';
         infoWindow.setContent(
@@ -420,24 +423,28 @@
     }
 
     /* ── FILTERS ── */
-    document.querySelectorAll('.filter-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
-        btn.classList.add('active');
-        activeFilter = btn.dataset.filter;
+    function applyFilter(f) {
+      activeFilter = f;
 
-        /* Filter cards in both grids */
-        document.querySelectorAll('.venue-card').forEach(function(card) {
-          const match = activeFilter === 'all' || card.dataset.cat === activeFilter;
-          card.classList.toggle('hidden', !match);
-        });
-
-        /* Filter map markers */
-        ALL_VENUES.forEach(function(v) {
-          const mk = markers[v.id];
-          if (mk) mk.setVisible(activeFilter === 'all' || v.cat === activeFilter);
-        });
+      /* Update button states */
+      document.querySelectorAll('.filter-btn').forEach(function(b) {
+        b.classList.toggle('active', b.dataset.filter === f);
       });
+
+      /* Show/hide cards in both grids */
+      document.querySelectorAll('.venue-card').forEach(function(card) {
+        card.classList.toggle('hidden', f !== 'all' && card.dataset.cat !== f);
+      });
+
+      /* Show/hide map markers */
+      ALL_VENUES.forEach(function(v) {
+        var mk = markers[v.id];
+        if (mk) mk.setVisible(f === 'all' || v.cat === f);
+      });
+    }
+
+    document.querySelectorAll('.filter-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() { applyFilter(btn.dataset.filter); });
     });
   </script>
 
