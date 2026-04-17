@@ -27,13 +27,30 @@
       font-weight: 900; font-size: 22px; letter-spacing: -1px;
       color: #1C1C1A; text-decoration: none;
     }
-    .nav-back {
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-link {
       font-weight: 700; font-size: 14px; color: #1C1C1A;
-      text-decoration: none; border: 1px solid #1C1C1A;
-      padding: 8px 16px; border-radius: 4px;
-      transition: background 0.15s, color 0.15s;
+      text-decoration: none; transition: opacity 0.15s;
     }
-    .nav-back:hover { background: #1C1C1A; color: #F2EDE6; }
+    .nav-link:hover { opacity: 0.55; }
+    .nav-cta {
+      font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 14px;
+      background: #D4845A; color: #fff; padding: 9px 18px; border-radius: 4px;
+      text-decoration: none; display: inline-block; transition: opacity 0.15s;
+    }
+    .nav-cta:hover { opacity: 0.88; }
+    .nav-hamburger {
+      display: none; background: none; border: none;
+      cursor: pointer; padding: 4px; flex-direction: column; gap: 5px;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: #1C1C1A; border-radius: 1px;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    .nav.open .nav-hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav.open .nav-hamburger span:nth-child(2) { opacity: 0; }
+    .nav.open .nav-hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
     /* ── HERO ── */
     .hero {
@@ -334,8 +351,16 @@
       .tier-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 768px) {
-      .nav { padding: 0 20px; height: 56px; }
+      .nav { padding: 0 20px; height: 56px; flex-wrap: wrap; align-content: flex-start; }
+      .nav.open { height: auto; }
       .nav-logo { font-size: 18px; }
+      .nav-links {
+        display: none; width: 100%; flex-direction: column;
+        align-items: flex-start; gap: 16px;
+        padding: 12px 0 16px; border-top: 1px solid rgba(28,28,26,0.1);
+      }
+      .nav.open .nav-links { display: flex; }
+      .nav-hamburger { display: flex; }
       .hero { padding: 64px 20px 56px; }
       .trust-strip { padding: 14px 20px; flex-direction: column; gap: 6px; }
       .trust-strip-text span { display: block; margin: 2px 0; opacity: 0; height: 0; overflow: hidden; }
@@ -355,9 +380,17 @@
 <body>
 
   <!-- ── NAV ── -->
-  <nav class="nav">
+  <nav class="nav" id="nav">
     <a class="nav-logo" href="index.html">inthebigbed</a>
-    <a class="nav-back" href="index.html">← Back to home</a>
+    <div class="nav-links" id="nav-links">
+      <a class="nav-link" href="walkers.html">Walkers</a>
+      <a class="nav-link" href="boarding.html">Boarding</a>
+      <a class="nav-link" href="places.html">Dog-friendly places</a>
+      <a class="nav-cta" href="index.html#waitlist">Join the waitlist</a>
+    </div>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
 
   <!-- ── HERO ── -->
@@ -671,6 +704,9 @@
         document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
         btn.classList.add('active');
       });
+    });
+    document.getElementById('nav-hamburger').addEventListener('click', function() {
+      document.getElementById('nav').classList.toggle('open');
     });
   </script>
 
