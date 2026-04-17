@@ -7,46 +7,36 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,700;9..40,900&display=swap');
 
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'DM Sans', sans-serif;
-      font-weight: 400;
-      background-color: #F2EDE6;
+      background: #F2EDE6;
       color: #1C1C1A;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
-    /* ─── NAV ─── */
+    /* ── NAV ── */
     .nav {
       position: sticky;
       top: 0;
-      z-index: 100;
-      background-color: #F2EDE6;
+      z-index: 200;
+      background: #F2EDE6;
       border-bottom: 1px solid #1C1C1A;
-      padding: 0 48px;
       height: 64px;
+      padding: 0 48px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-
-    .nav-wordmark {
-      font-family: 'DM Sans', sans-serif;
+    .nav-logo {
       font-weight: 900;
       font-size: 22px;
-      color: #1C1C1A;
       letter-spacing: -1px;
+      color: #1C1C1A;
       text-decoration: none;
     }
-
     .nav-back {
-      font-family: 'DM Sans', sans-serif;
       font-weight: 700;
       font-size: 14px;
       color: #1C1C1A;
@@ -54,30 +44,22 @@
       border: 1px solid #1C1C1A;
       padding: 8px 16px;
       border-radius: 4px;
-      transition: background 0.15s ease, color 0.15s ease;
+      transition: background 0.15s, color 0.15s;
     }
+    .nav-back:hover { background: #1C1C1A; color: #F2EDE6; }
 
-    .nav-back:hover {
-      background-color: #1C1C1A;
-      color: #F2EDE6;
-    }
-
-    /* ─── PAGE HEADER ─── */
+    /* ── PAGE HEADER ── */
     .page-header {
       max-width: 1100px;
       margin: 0 auto;
       padding: 64px 48px 40px;
     }
-
     .page-heading {
-      font-family: 'DM Sans', sans-serif;
       font-weight: 900;
       font-size: clamp(32px, 5vw, 56px);
-      color: #1C1C1A;
       line-height: 1.1;
       margin-bottom: 12px;
     }
-
     .page-sub {
       font-size: 18px;
       color: #555;
@@ -85,309 +67,67 @@
       line-height: 1.5;
     }
 
-    /* ─── FILTER BUTTONS ─── */
-    .filters {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
+    /* ── FILTERS ── */
+    .filters { display: flex; gap: 10px; flex-wrap: wrap; }
     .filter-btn {
       font-family: 'DM Sans', sans-serif;
       font-weight: 700;
       font-size: 14px;
       padding: 9px 18px;
       border-radius: 4px;
-      border: 1px solid #1C1C1A;
+      border: 1.5px solid #1C1C1A;
       background: transparent;
       color: #1C1C1A;
       cursor: pointer;
-      transition: background 0.15s ease, color 0.15s ease;
+      transition: background 0.15s, color 0.15s;
     }
+    .filter-btn:hover { background: rgba(28,28,26,0.08); }
+    .filter-btn.active { background: #1C1C1A; color: #F2EDE6; }
 
-    .filter-btn:hover {
-      background-color: rgba(28, 28, 26, 0.08);
-    }
-
-    .filter-btn.active {
-      background-color: #1C1C1A;
-      color: #F2EDE6;
-    }
-
-    /* ─── MAP ─── */
+    /* ── MAP ── */
     #map {
       width: 100%;
-      height: 460px;
+      height: 480px;
       border-top: 1px solid #1C1C1A;
       border-bottom: 1px solid #1C1C1A;
       display: block;
     }
 
-    /* ─── RESULTS ─── */
-    .results-section {
+    /* ── VENUES SECTION ── */
+    .venues-section {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 48px 48px 96px;
+      padding: 56px 48px 96px;
     }
-
-    .results-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 28px;
-      flex-wrap: wrap;
-      gap: 12px;
+    .venues-section-heading {
+      font-weight: 900;
+      font-size: 26px;
+      margin-bottom: 32px;
     }
-
-    .results-count {
-      font-size: 14px;
-      color: #888;
-    }
-
-    /* ─── LOADING / ERROR ─── */
-    .state-message {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 64px 24px;
-      color: #888;
-      font-size: 16px;
-    }
-
-    .state-message strong {
-      display: block;
-      font-weight: 700;
-      font-size: 18px;
-      color: #1C1C1A;
-      margin-bottom: 8px;
-    }
-
-    .loading-indicator {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 2px solid #ddd;
-      border-top-color: #D4845A;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      vertical-align: middle;
-      margin-right: 10px;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* ─── VENUE GRID ─── */
-    .venues-grid {
+    .venue-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 20px;
     }
 
-    /* ─── VENUE CARD ─── */
-    .venue-card {
-      background: #FFFFFF;
-      border: 1px solid #1C1C1A;
-      border-radius: 4px;
-      padding: 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-      cursor: pointer;
-      transition: box-shadow 0.15s ease, transform 0.12s ease;
-    }
-
-    .venue-card:hover {
-      box-shadow: 0 6px 20px rgba(28, 28, 26, 0.12);
-      transform: translateY(-2px);
-    }
-
-    .venue-card.card-highlighted {
-      border-color: #D4845A;
-      box-shadow: 0 0 0 2px #D4845A;
-    }
-
-    .venue-category-tag {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: #D4845A;
-    }
-
-    .venue-name {
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 700;
-      font-size: 17px;
-      color: #1C1C1A;
-      line-height: 1.3;
-    }
-
-    .venue-stars-row {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .stars-visual {
-      color: #E8C84A;
-      font-size: 14px;
-      letter-spacing: 1px;
-      line-height: 1;
-    }
-
-    .rating-text {
-      font-size: 13px;
-      color: #777;
-    }
-
-    .venue-address {
-      font-size: 13px;
-      color: #555;
-      line-height: 1.45;
-    }
-
-    .venue-status {
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .venue-status.status-open   { color: #6B9E7A; }
-    .venue-status.status-closed { color: #b94040; }
-    .venue-status.status-unknown { color: #aaa; font-weight: 400; }
-
-    .venue-directions {
-      display: inline-block;
-      margin-top: 2px;
-      font-size: 13px;
-      font-weight: 700;
-      color: #D4845A;
-      text-decoration: none;
-    }
-
-    .venue-directions:hover {
-      text-decoration: underline;
-    }
-
-    /* ─── HANDPICKED SECTION ─── */
-    .handpicked-section {
-      background-color: #F2EDE6;
-      border-bottom: 1px solid #1C1C1A;
-    }
-
-    .handpicked-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 56px 48px;
-    }
-
-    .handpicked-heading {
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 900;
-      font-size: 28px;
-      color: #1C1C1A;
-      margin-bottom: 8px;
-    }
-
-    .handpicked-sub {
-      font-size: 15px;
-      color: #555;
-      margin-bottom: 36px;
-      line-height: 1.5;
-      max-width: 600px;
-    }
-
-    .handpicked-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 16px;
-    }
-
-    .hp-card {
-      cursor: default;
-    }
-
-    .hp-card.hidden {
-      display: none;
-    }
-
-    .verified-badge {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 700;
-      color: #D4845A;
-      letter-spacing: 0.04em;
-    }
-
-    /* ─── COMBINED SECTION ─── */
-    .combined-heading {
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 900;
-      font-size: 28px;
-      color: #1C1C1A;
-      margin-bottom: 28px;
-    }
-
-    .df-badge {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      color: #6B9E7A;
-    }
-
-    .loading-inline {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 14px;
-      color: #888;
-      margin-bottom: 24px;
-    }
-
-    .static-card.hidden,
-    .google-card.hidden {
-      display: none;
-    }
-
-    /* ─── RESPONSIVE ─── */
+    /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
-      .nav {
-        padding: 0 20px;
-        height: 58px;
-      }
-
-      .nav-wordmark {
-        font-size: 18px;
-      }
-
-      .page-header {
-        padding: 40px 20px 28px;
-      }
-
-      #map {
-        height: 320px;
-      }
-
-      .results-section {
-        padding: 32px 20px 64px;
-      }
-
-      .venues-grid {
-        grid-template-columns: 1fr;
-      }
+      .nav { padding: 0 20px; height: 56px; }
+      .nav-logo { font-size: 18px; }
+      .page-header { padding: 40px 20px 28px; }
+      #map { height: 320px; }
+      .venues-section { padding: 40px 20px 64px; }
+      .venue-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ─── NAV ─── -->
   <nav class="nav">
-    <a class="nav-wordmark" href="index.html">inthebigbed</a>
+    <a class="nav-logo" href="index.html">inthebigbed</a>
     <a class="nav-back" href="index.html">← Back to home</a>
   </nav>
 
-  <!-- ─── PAGE HEADER ─── -->
   <div class="page-header">
     <h1 class="page-heading">Dog-friendly Liverpool</h1>
     <p class="page-sub">Pubs, bars, cafes and restaurants that actually welcome your dog.</p>
@@ -398,550 +138,48 @@
     </div>
   </div>
 
-  <!-- ─── MAP ─── -->
   <div id="map"></div>
 
-  <!-- ─── HANDPICKED SECTION ─── -->
-  <section class="handpicked-section" id="handpicked-section">
-    <div class="handpicked-inner">
-      <h2 class="handpicked-heading">Handpicked by us 🐾</h2>
-      <p class="handpicked-sub">Places we know personally welcome dogs — verified by the In The Big Bed team.</p>
-      <div class="handpicked-grid" id="handpicked-grid">
-
-        <div class="venue-card hp-card" data-filter="restaurant">
-          <span class="verified-badge">Locally verified 🐾</span>
-          <div class="venue-name">Bao and Bap</div>
-          <div class="venue-address">Rodney Street, Liverpool</div>
-        </div>
-
-        <div class="venue-card hp-card" data-filter="restaurant">
-          <span class="verified-badge">Locally verified 🐾</span>
-          <div class="venue-name">Baltic Market</div>
-          <div class="venue-address">Stanhope Street, Liverpool</div>
-        </div>
-
-        <div class="venue-card hp-card" data-filter="restaurant">
-          <span class="verified-badge">Locally verified 🐾</span>
-          <div class="venue-name">Derek's Coffee &amp; Sandwiches</div>
-          <div class="venue-address">Dog-friendly at all locations</div>
-          <div class="venue-address">
-            📍 Lark Lane<br>
-            📍 Berry Street<br>
-            📍 Allerton Road<br>
-            📍 College Road, Crosby
-          </div>
-        </div>
-
-        <div class="venue-card hp-card" data-filter="pub-bar">
-          <span class="verified-badge">Locally verified 🐾</span>
-          <div class="venue-name">The Halton Castle</div>
-          <div class="venue-address">Mill Lane, Liverpool</div>
-        </div>
-
-        <div class="venue-card hp-card" data-filter="pub-bar">
-          <span class="verified-badge">Locally verified 🐾</span>
-          <div class="venue-name">Eden Bar</div>
-          <div class="venue-address">Eaton Road, Liverpool</div>
-        </div>
-
-      </div>
+  <div class="venues-section">
+    <h2 class="venues-section-heading">Dog-friendly bars and restaurants in Liverpool</h2>
+    <div class="venue-grid" id="venue-grid">
+      <!-- Cards injected by JavaScript -->
     </div>
-  </section>
-
-  <!-- ─── COMBINED SECTION ─── -->
-  <div class="results-section">
-    <h2 class="combined-heading">Dog-friendly bars and restaurants in Liverpool</h2>
-    <div class="loading-inline" id="loading-inline">
-      <span class="loading-indicator"></span>
-      <span>Finding more places…</span>
-    </div>
-    <div class="venues-grid" id="venues-grid"></div>
   </div>
 
   <script>
-    /* ─── CONFIG ─── */
-    const LIVERPOOL_CENTER = { lat: 53.4084, lng: -2.9916 };
-    const SEARCH_RADIUS    = 8000; // metres
-    const MAX_VENUES       = 20;
+    const LIVERPOOL = { lat: 53.4084, lng: -2.9916 };
 
-    /* ─── STATE ─── */
-    let map;
-    let allVenues     = [];
-    let markers       = [];
-    let infoWindow;
-    let activeFilter  = 'all';
-
-    /* ─── MAP STYLE — warm/clean ─── */
-    const MAP_STYLES = [
-      { featureType: 'all',        elementType: 'labels.text.fill',   stylers: [{ color: '#4a4a48' }] },
-      { featureType: 'poi',        elementType: 'all',                 stylers: [{ visibility: 'off' }] },
-      { featureType: 'transit',    elementType: 'labels.icon',         stylers: [{ visibility: 'off' }] },
-      { featureType: 'road',       elementType: 'geometry.fill',       stylers: [{ color: '#ffffff' }] },
-      { featureType: 'road',       elementType: 'geometry.stroke',     stylers: [{ color: '#e0d8ce' }] },
-      { featureType: 'road.highway', elementType: 'geometry.fill',     stylers: [{ color: '#f7ede3' }] },
-      { featureType: 'road.highway', elementType: 'geometry.stroke',   stylers: [{ color: '#dcc8b8' }] },
-      { featureType: 'landscape',  elementType: 'geometry.fill',       stylers: [{ color: '#f5f0ea' }] },
-      { featureType: 'water',      elementType: 'geometry.fill',       stylers: [{ color: '#bdd5e0' }] },
-      { featureType: 'administrative', elementType: 'geometry.stroke', stylers: [{ color: '#c8c0b8' }] },
-    ];
-
-    /* ─── SEARCH DEFINITIONS ─── */
-    const SEARCHES = [
-      { query: 'dog friendly pub Liverpool',        filterKey: 'pub-bar',    label: 'Pub'        },
-      { query: 'dog friendly bar Liverpool',        filterKey: 'pub-bar',    label: 'Bar'        },
-      { query: 'dog friendly restaurant Liverpool', filterKey: 'restaurant', label: 'Restaurant' },
-      { query: 'dog friendly cafe Liverpool',       filterKey: 'restaurant', label: 'Café'       },
-    ];
-
-    /* ─── MANUALLY CURATED VENUES ─── */
-    const STATIC_VENUES = [
-      { name: "The Ship and Mitre",             address: "133 Dale St, Liverpool L2",             filterKey: 'pub-bar'    },
-      { name: "The Dead Crafty Beer Company",   address: "Dale St, City Centre, Liverpool",        filterKey: 'pub-bar'    },
-      { name: "The Philharmonic Dining Rooms",  address: "36 Hope St, Liverpool L1",               filterKey: 'pub-bar'    },
-      { name: "The Hope and Anchor",            address: "Maryland St, Liverpool L1",              filterKey: 'pub-bar'    },
-      { name: "Ma Boyle's Alehouse and Eatery", address: "Tower Buildings, Liverpool L3",          filterKey: 'pub-bar'    },
-      { name: "Cains Brewery",                  address: "Stanhope St, Liverpool L8",              filterKey: 'pub-bar'    },
-      { name: "Salt Dog Slims",                 address: "Rainford Gardens, Liverpool L2",         filterKey: 'pub-bar'    },
-      { name: "Pins Social Club",               address: "Duke St, Liverpool L1",                  filterKey: 'pub-bar'    },
-      { name: "Slug and Lettuce",               address: "City Centre, Liverpool L1",              filterKey: 'pub-bar'    },
-      { name: "The Club House",                 address: "City Centre, Liverpool",                 filterKey: 'pub-bar'    },
-      { name: "Kazimier Garden",                address: "32 Seel St, Liverpool L1",               filterKey: 'pub-bar'    },
-      { name: "BrewDog Liverpool",              address: "Colquitt St, Liverpool L1",              filterKey: 'pub-bar'    },
-      { name: "Buyers Club",                    address: "Hardman St, Liverpool L1",               filterKey: 'pub-bar'    },
-      { name: "Baltic Fleet",                   address: "33A Wapping, Liverpool L1",              filterKey: 'pub-bar'    },
-      { name: "Baltic Social",                  address: "Baltic Triangle, Liverpool",             filterKey: 'pub-bar'    },
-      { name: "Brasco Lounge",                  address: "Royal Albert Dock, Liverpool L3",        filterKey: 'pub-bar'    },
-      { name: "Punch Tarmey's",                 address: "City Centre, Liverpool",                 filterKey: 'pub-bar'    },
-      { name: "Shenanigans",                    address: "City Centre, Liverpool",                 filterKey: 'pub-bar'    },
-      { name: "The Lodge",                      address: "33 Lark Lane, Liverpool L17",            filterKey: 'pub-bar'    },
-      { name: "The Bookbinder",                 address: "Lark Lane, Liverpool L17",               filterKey: 'pub-bar'    },
-      { name: "Milo Lounge",                    address: "Lark Lane, Liverpool L17",               filterKey: 'pub-bar'    },
-      { name: "The Caledonia",                  address: "22 Caledonia St, Liverpool L7",          filterKey: 'pub-bar'    },
-      { name: "Peter Kavanagh's",               address: "2-6 Egerton St, Liverpool L8",           filterKey: 'pub-bar'    },
-      { name: "Dovedale Towers",                address: "60 Penny Lane, Liverpool L18",           filterKey: 'pub-bar'    },
-      { name: "The Storrsdale",                 address: "Storrsdale Rd, Liverpool L18",           filterKey: 'pub-bar'    },
-      { name: "The George Crosby",              address: "1 Moor Lane, Crosby, Liverpool L23",     filterKey: 'pub-bar'    },
-      { name: "The Freshfield",                 address: "Formby, Liverpool L37",                  filterKey: 'pub-bar'    },
-      { name: "Heatons Bridge",                 address: "Scarisbrick",                            filterKey: 'pub-bar'    },
-      { name: "The Dandelion Tavern",           address: "Cronton, Widnes",                        filterKey: 'pub-bar'    },
-      { name: "Doctor Duncans",                 address: "St Johns Lane, Liverpool L1",            filterKey: 'pub-bar'    },
-      { name: "The Pen Factory",                address: "Hope St, Liverpool L1",                  filterKey: 'pub-bar'    },
-      { name: "The One O'Clock Gun",            address: "Royal Albert Dock, Liverpool L3",        filterKey: 'pub-bar'    },
-      { name: "The Dog House",                  address: "15-17 Church Rd, Liverpool L15",         filterKey: 'pub-bar'    },
-      { name: "The Head of Steam",              address: "85 Hanover St, Liverpool L1",            filterKey: 'pub-bar'    },
-      { name: "The Farmers Arms",               address: "Wirral",                                 filterKey: 'pub-bar'    },
-      { name: "Lock and Quay",                  address: "2 Irlam Road, Bootle, Liverpool L20",    filterKey: 'pub-bar'    },
-      { name: "The Royal Standard",             address: "West Derby, Liverpool",                  filterKey: 'pub-bar'    },
-      { name: "White Hart",                     address: "23 Hope Street, Liverpool L1",           filterKey: 'pub-bar'    },
-      { name: "Queen of Hope Street",           address: "1-1A Myrtle Street, Liverpool L7",       filterKey: 'pub-bar'    },
-      { name: "Swan",                           address: "86 Wood Street, Liverpool L1",           filterKey: 'pub-bar'    },
-      { name: "Mayflower",                      address: "34 Pilgrim Street, Liverpool L1",        filterKey: 'pub-bar'    },
-      { name: "Blondies",                       address: "Aigburth, Liverpool",                    filterKey: 'pub-bar'    },
-      { name: "Trap and Hatch",                 address: "135 South Road, Waterloo, Liverpool L22",filterKey: 'pub-bar'    },
-      { name: "Cobden",                         address: "89 Quarry Street, Woolton, Liverpool L25",filterKey: 'pub-bar'   },
-      { name: "Three Piggies",                  address: "Allerton Road, Liverpool",               filterKey: 'pub-bar'    },
-      { name: "Queens Arms",                    address: "Victoria Street, Liverpool",             filterKey: 'pub-bar'    },
-      { name: "McNasty's",                      address: "Seel Street, Liverpool",                 filterKey: 'pub-bar'    },
-      { name: "Frederiks",                      address: "Hope Street, Liverpool",                 filterKey: 'pub-bar'    },
-      { name: "The Shandon Bells",              address: "Hope Street, Liverpool",                 filterKey: 'pub-bar'    },
-      { name: "Cosy Club",                      address: "Liverpool ONE, Liverpool L1",            filterKey: 'restaurant' },
-      { name: "The Refinery Liverpool",         address: "City Centre, Liverpool",                 filterKey: 'restaurant' },
-      { name: "The Monro",                      address: "Duke St, Liverpool L1",                  filterKey: 'restaurant' },
-      { name: "Pho Castle Street",              address: "Castle St, Liverpool L2",                filterKey: 'restaurant' },
-      { name: "Rhubarb",                        address: "Lark Lane area, Liverpool",              filterKey: 'restaurant' },
-      { name: "Permit Room by Dishoom",         address: "Liverpool City Centre",                  filterKey: 'restaurant' },
-      { name: "Mowgli",                         address: "Bold Street and Water Street, Liverpool",filterKey: 'restaurant' },
-    ];
-
-    /* ─── INIT MAP ─── */
     function initMap() {
-      map = new google.maps.Map(document.getElementById('map'), {
-        center:           LIVERPOOL_CENTER,
-        zoom:             13,
-        styles:           MAP_STYLES,
-        mapTypeControl:   false,
+      new google.maps.Map(document.getElementById('map'), {
+        center: LIVERPOOL,
+        zoom: 13,
+        mapTypeControl: false,
         streetViewControl: false,
         fullscreenControl: true,
-        zoomControlOptions: {
-          position: google.maps.ControlPosition.RIGHT_BOTTOM,
-        },
-      });
-
-      infoWindow = new google.maps.InfoWindow({ maxWidth: 240 });
-      runSearches();
-      enrichStaticVenues();
-    }
-
-    /* ─── SEARCHES ─── */
-    function runSearches() {
-      const service   = new google.maps.places.PlacesService(map);
-      const seenIds   = new Set();
-      let completed   = 0;
-      let anyResults  = false;
-
-      SEARCHES.forEach(({ query, filterKey, label }) => {
-        service.textSearch(
-          { query, location: LIVERPOOL_CENTER, radius: SEARCH_RADIUS },
-          (results, status) => {
-            if (
-              status === google.maps.places.PlacesServiceStatus.OK &&
-              results && results.length
-            ) {
-              anyResults = true;
-              results.forEach(place => {
-                if (!seenIds.has(place.place_id)) {
-                  seenIds.add(place.place_id);
-                  allVenues.push({ ...place, filterKey, label });
-                }
-              });
-            }
-
-            completed++;
-            if (completed === SEARCHES.length) {
-              if (!anyResults) {
-                showError('Could not load venues. Please check the API key or try again.');
-                return;
-              }
-              // Sort by rating desc, cap at MAX_VENUES
-              allVenues = allVenues
-                .sort((a, b) => (b.rating || 0) - (a.rating || 0))
-                .slice(0, MAX_VENUES);
-              renderAll();
-            }
-          }
-        );
+        styles: [
+          { featureType: 'poi',       elementType: 'all',             stylers: [{ visibility: 'off' }] },
+          { featureType: 'transit',   elementType: 'labels.icon',     stylers: [{ visibility: 'off' }] },
+          { featureType: 'road',      elementType: 'geometry.fill',   stylers: [{ color: '#ffffff' }] },
+          { featureType: 'road',      elementType: 'geometry.stroke', stylers: [{ color: '#e0d8ce' }] },
+          { featureType: 'landscape', elementType: 'geometry.fill',   stylers: [{ color: '#f5f0ea' }] },
+          { featureType: 'water',     elementType: 'geometry.fill',   stylers: [{ color: '#bdd5e0' }] },
+        ],
       });
     }
 
-    /* ─── RENDER ALL ─── */
-    function renderAll() {
-      buildMarkers();
-      buildCards();
-    }
-
-    /* ─── MARKERS ─── */
-    function buildMarkers() {
-      markers.forEach(m => m.setMap(null));
-      markers = [];
-
-      getVisible().forEach(venue => {
-        const marker = new google.maps.Marker({
-          position: venue.geometry.location,
-          map,
-          title: venue.name,
-          icon: {
-            path:        google.maps.SymbolPath.CIRCLE,
-            scale:       9,
-            fillColor:   '#D4845A',
-            fillOpacity: 1,
-            strokeColor: '#1C1C1A',
-            strokeWeight: 1.5,
-          },
-        });
-
-        marker.addListener('click', () => {
-          infoWindow.setContent(infoWindowHtml(venue));
-          infoWindow.open(map, marker);
-          // Briefly highlight corresponding card
-          document.querySelectorAll('.venue-card').forEach(c => c.classList.remove('card-highlighted'));
-          const card = document.querySelector(`.venue-card[data-place-id="${venue.place_id}"]`);
-          if (card) {
-            card.classList.add('card-highlighted');
-            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }
-        });
-
-        markers.push(marker);
-        venue._marker = marker;
-      });
-    }
-
-    /* ─── STATIC VENUE ENRICHMENT (green pins + full card details) ─── */
-    function enrichStaticVenues() {
-      const service = new google.maps.places.PlacesService(map);
-
-      STATIC_VENUES.forEach((venue, idx) => {
-        service.findPlaceFromQuery(
-          { query: venue.name + ', ' + venue.address, fields: ['place_id', 'geometry'] },
-          (results, fStatus) => {
-            const card = document.getElementById('sc-' + idx);
-
-            if (
-              fStatus !== google.maps.places.PlacesServiceStatus.OK ||
-              !results || !results.length
-            ) {
-              if (card) {
-                const s = card.querySelector('.venue-status');
-                s.className = 'venue-status status-unknown';
-                s.textContent = 'Hours not listed';
-              }
-              return;
-            }
-
-            const placeId   = results[0].place_id;
-            const fallbackLoc = results[0].geometry && results[0].geometry.location;
-
-            service.getDetails(
-              { placeId, fields: ['opening_hours', 'rating', 'user_ratings_total', 'geometry'] },
-              (place, dStatus) => {
-                const ok  = dStatus === google.maps.places.PlacesServiceStatus.OK;
-                const loc = (ok && place && place.geometry && place.geometry.location)
-                  ? place.geometry.location : fallbackLoc;
-                const hours      = ok && place ? place.opening_hours       : null;
-                const rating     = ok && place ? place.rating              : null;
-                const totalRatings = ok && place ? place.user_ratings_total : null;
-                const status = openStatus({ opening_hours: hours });
-                const dirUrl = 'https://www.google.com/maps/dir/?api=1&destination_place_id='
-                  + placeId + '&destination=' + encodeURIComponent(venue.name);
-
-                // Update placeholder card
-                if (card) {
-                  card.querySelector('.venue-directions').href = dirUrl;
-                  const s = card.querySelector('.venue-status');
-                  s.className = 'venue-status ' + status.cls;
-                  s.textContent = status.text;
-
-                  if (rating && !card.querySelector('.venue-stars-row')) {
-                    card.querySelector('.venue-name').insertAdjacentHTML('afterend',
-                      '<div class="venue-stars-row">'
-                      + '<span class="stars-visual">' + starsText(rating) + '</span>'
-                      + '<span class="rating-text">' + rating
-                      + (totalRatings ? ' &nbsp;(' + totalRatings.toLocaleString() + ' reviews)' : '')
-                      + '</span></div>');
-                  }
-                }
-
-                // Green map marker with full popup
-                if (loc) {
-                  const marker = new google.maps.Marker({
-                    position: loc,
-                    map,
-                    title: venue.name,
-                    icon: {
-                      path:        google.maps.SymbolPath.CIRCLE,
-                      scale:       9,
-                      fillColor:   '#6B9E7A',
-                      fillOpacity: 1,
-                      strokeColor: '#1C1C1A',
-                      strokeWeight: 1.5,
-                    },
-                  });
-
-                  marker.addListener('click', () => {
-                    infoWindow.setContent(
-                      '<div style="font-family:\'DM Sans\',sans-serif;padding:6px 4px;">'
-                      + '<div style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#6B9E7A;margin-bottom:4px;">Dog-friendly 🐾</div>'
-                      + '<div style="font-weight:700;font-size:14px;color:#1C1C1A;margin-bottom:4px;line-height:1.3;">' + esc(venue.name) + '</div>'
-                      + '<div style="font-size:12px;color:#555;margin-bottom:4px;">' + esc(venue.address) + '</div>'
-                      + (rating ? '<div style="font-size:13px;color:#777;margin-bottom:4px;">' + starsText(rating) + ' ' + rating + '</div>' : '')
-                      + '<div style="font-size:12px;font-weight:700;color:' + status.color + ';">' + status.text + '</div>'
-                      + '</div>'
-                    );
-                    infoWindow.open(map, marker);
-                  });
-                }
-              }
-            );
-          }
-        );
-      });
-    }
-
-    function infoWindowHtml(v) {
-      const status = openStatus(v);
-      return `
-        <div style="font-family:'DM Sans',sans-serif;padding:6px 4px;">
-          <div style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#D4845A;margin-bottom:4px;">${esc(v.label)}</div>
-          <div style="font-weight:700;font-size:14px;color:#1C1C1A;margin-bottom:4px;line-height:1.3;">${esc(v.name)}</div>
-          ${v.rating ? `<div style="font-size:13px;color:#777;">${starsText(v.rating)} ${v.rating}</div>` : ''}
-          <div style="font-size:12px;font-weight:700;margin-top:4px;color:${status.color};">${status.text}</div>
-        </div>`;
-    }
-
-    /* ─── STATIC CARDS (placeholder — enriched by enrichStaticVenues once Maps API loads) ─── */
-    function renderStaticVenues() {
-      const grid = document.getElementById('venues-grid');
-      STATIC_VENUES.forEach((v, idx) => {
-        const label  = v.filterKey === 'pub-bar' ? 'Pub / Bar' : 'Restaurant';
-        const dirUrl = 'https://www.google.com/maps/search/' + encodeURIComponent(v.name + ' ' + v.address);
-        grid.insertAdjacentHTML('beforeend',
-          '<div class="venue-card static-card" id="sc-' + idx + '" data-filter="' + v.filterKey + '">'
-          + '<div class="venue-category-tag">' + label + '</div>'
-          + '<div class="venue-name">' + esc(v.name) + '</div>'
-          + '<div class="venue-address">' + esc(v.address) + '</div>'
-          + '<span class="df-badge">Dog-friendly 🐾</span>'
-          + '<div class="venue-status status-unknown">Loading hours\u2026</div>'
-          + '<a class="venue-directions" href="' + dirUrl + '" target="_blank" rel="noopener noreferrer">Get directions \u2192</a>'
-          + '</div>'
-        );
-      });
-    }
-
-    /* ─── GOOGLE CARDS ─── */
-    function buildCards() {
-      const grid    = document.getElementById('venues-grid');
-      const visible = getVisible();
-
-      // Remove previous google-card run without touching static cards
-      grid.querySelectorAll('.google-card').forEach(c => c.remove());
-
-      // Hide loading indicator
-      const loadingEl = document.getElementById('loading-inline');
-      if (loadingEl) loadingEl.style.display = 'none';
-
-      if (visible.length) {
-        grid.insertAdjacentHTML('beforeend', visible.map(v => googleCardHtml(v)).join(''));
-      }
-
-      // Wire up card → map pan (google cards only)
-      grid.querySelectorAll('.google-card').forEach(card => {
-        card.addEventListener('click', e => {
-          if (e.target.tagName === 'A') return;
-          const id    = card.dataset.placeId;
-          const venue = allVenues.find(v => v.place_id === id);
-          if (!venue || !venue._marker) return;
-          map.panTo(venue.geometry.location);
-          map.setZoom(15);
-          google.maps.event.trigger(venue._marker, 'click');
-          document.getElementById('map').scrollIntoView({ behavior: 'smooth' });
-        });
-      });
-    }
-
-    function googleCardHtml(v) {
-      const status  = openStatus(v);
-      const address = v.vicinity || v.formatted_address || '';
-      const dirUrl  = `https://www.google.com/maps/dir/?api=1&destination_place_id=${v.place_id}&destination=${encodeURIComponent(v.name)}`;
-
-      return `
-        <div class="venue-card google-card" data-place-id="${esc(v.place_id)}">
-          <div class="venue-category-tag">${esc(v.label)}</div>
-          <div class="venue-name">${esc(v.name)}</div>
-          ${v.rating ? `
-            <div class="venue-stars-row">
-              <span class="stars-visual">${starsText(v.rating)}</span>
-              <span class="rating-text">${v.rating}${v.user_ratings_total ? ` &nbsp;(${v.user_ratings_total.toLocaleString()} reviews)` : ''}</span>
-            </div>` : ''}
-          ${address ? `<div class="venue-address">${esc(address)}</div>` : ''}
-          <div class="venue-status ${status.cls}">${status.text}</div>
-          <a class="venue-directions" href="${dirUrl}" target="_blank" rel="noopener noreferrer">Get directions →</a>
-        </div>`;
-    }
-
-    /* ─── HELPERS ─── */
-    function getVisible() {
-      if (activeFilter === 'all') return allVenues;
-      return allVenues.filter(v => v.filterKey === activeFilter);
-    }
-
-    function openStatus(venue) {
-      if (!venue.opening_hours) return { cls: 'status-unknown', text: 'Hours not listed', color: '#aaa' };
-      if (venue.opening_hours.open_now) return { cls: 'status-open', text: 'Open now', color: '#6B9E7A' };
-
-      // Closed — find the next opening time from periods data
-      const periods = venue.opening_hours.periods;
-      if (periods && periods.length) {
-        const now = new Date();
-        const currentDay = now.getDay(); // 0 = Sunday
-        const currentMins = now.getHours() * 60 + now.getMinutes();
-
-        for (let d = 0; d <= 7; d++) {
-          const checkDay = (currentDay + d) % 7;
-          const dayPeriods = periods
-            .filter(p => p.open && p.open.day === checkDay)
-            .sort((a, b) => parseInt(a.open.time, 10) - parseInt(b.open.time, 10));
-
-          for (const period of dayPeriods) {
-            const t = period.open.time; // "HHMM" 24-hour
-            const h = parseInt(t.slice(0, 2), 10);
-            const m = parseInt(t.slice(2, 4), 10);
-
-            // Skip times that have already passed today
-            if (d === 0 && h * 60 + m <= currentMins) continue;
-
-            // Format as 12-hour time
-            const ampm = h >= 12 ? 'PM' : 'AM';
-            const hour12 = h % 12 || 12;
-            const minStr = m > 0 ? `:${String(m).padStart(2, '0')}` : '';
-            const timeLabel = `${hour12}${minStr} ${ampm}`;
-
-            let text;
-            if (d === 0)      text = `Closed — opens ${timeLabel}`;
-            else if (d === 1) text = `Closed — opens ${timeLabel} tomorrow`;
-            else {
-              const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-              text = `Closed — opens ${dayNames[checkDay]} ${timeLabel}`;
-            }
-
-            return { cls: 'status-closed', text, color: '#b94040' };
-          }
-        }
-      }
-
-      return { cls: 'status-closed', text: 'Closed now', color: '#b94040' };
-    }
-
-    function starsText(rating) {
-      const r     = Math.round(rating);
-      const full  = Math.max(0, Math.min(5, r));
-      const empty = 5 - full;
-      return '★'.repeat(full) + '☆'.repeat(empty);
-    }
-
-    function esc(str) {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
-    }
-
-    function showError(msg) {
-      const loadingEl = document.getElementById('loading-inline');
-      if (loadingEl) loadingEl.style.display = 'none';
-      // Static cards remain; just silently skip google results on error
-    }
-
-    /* ─── FILTER BUTTONS ─── */
+    /* Filter buttons */
     document.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        activeFilter = btn.dataset.filter;
-
-        // Filter handpicked cards
-        const hpCards = document.querySelectorAll('.hp-card');
-        hpCards.forEach(card => {
-          const matches = activeFilter === 'all' || card.dataset.filter === activeFilter;
-          card.classList.toggle('hidden', !matches);
-        });
-        const anyHpVisible = [...hpCards].some(c => !c.classList.contains('hidden'));
-        document.getElementById('handpicked-section').style.display = anyHpVisible ? '' : 'none';
-
-        // Filter static cards in combined section
-        document.querySelectorAll('.static-card').forEach(card => {
-          const matches = activeFilter === 'all' || card.dataset.filter === activeFilter;
-          card.classList.toggle('hidden', !matches);
-        });
-
-        if (allVenues.length) {
-          infoWindow && infoWindow.close();
-          buildMarkers();
-          buildCards();
-        }
       });
     });
-
-    // Populate static cards immediately
-    renderStaticVenues();
   </script>
 
-  <!-- Load Maps JS API last — callback triggers initMap -->
-  <script
-    async
-    defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIaK7AvsGOUBhmRojkTG4bC-tPLUEIJBY&libraries=places&callback=initMap"
-  ></script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIaK7AvsGOUBhmRojkTG4bC-tPLUEIJBY&libraries=places&callback=initMap">
+  </script>
 
 </body>
 </html>
