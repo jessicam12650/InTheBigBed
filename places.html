@@ -425,9 +425,17 @@
         document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
         btn.classList.add('active');
         activeFilter = btn.dataset.filter;
+
+        /* Filter cards in both grids */
         document.querySelectorAll('.venue-card').forEach(function(card) {
           const match = activeFilter === 'all' || card.dataset.cat === activeFilter;
           card.classList.toggle('hidden', !match);
+        });
+
+        /* Filter map markers */
+        ALL_VENUES.forEach(function(v) {
+          const mk = markers[v.id];
+          if (mk) mk.setVisible(activeFilter === 'all' || v.cat === activeFilter);
         });
       });
     });
