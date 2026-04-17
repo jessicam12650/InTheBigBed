@@ -18,97 +18,70 @@
 
     /* ── NAV ── */
     .nav {
-      position: sticky;
-      top: 0;
-      z-index: 200;
-      background: #F2EDE6;
-      border-bottom: 1px solid #1C1C1A;
-      height: 64px;
-      padding: 0 48px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      position: sticky; top: 0; z-index: 200;
+      background: #F2EDE6; border-bottom: 1px solid #1C1C1A;
+      height: 64px; padding: 0 48px;
+      display: flex; align-items: center; justify-content: space-between;
     }
-    .nav-logo {
-      font-weight: 900;
-      font-size: 22px;
-      letter-spacing: -1px;
-      color: #1C1C1A;
-      text-decoration: none;
-    }
+    .nav-logo { font-weight: 900; font-size: 22px; letter-spacing: -1px; color: #1C1C1A; text-decoration: none; }
     .nav-back {
-      font-weight: 700;
-      font-size: 14px;
-      color: #1C1C1A;
-      text-decoration: none;
-      border: 1px solid #1C1C1A;
-      padding: 8px 16px;
-      border-radius: 4px;
+      font-weight: 700; font-size: 14px; color: #1C1C1A;
+      text-decoration: none; border: 1px solid #1C1C1A;
+      padding: 8px 16px; border-radius: 4px;
       transition: background 0.15s, color 0.15s;
     }
     .nav-back:hover { background: #1C1C1A; color: #F2EDE6; }
 
     /* ── PAGE HEADER ── */
-    .page-header {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 64px 48px 40px;
-    }
-    .page-heading {
-      font-weight: 900;
-      font-size: clamp(32px, 5vw, 56px);
-      line-height: 1.1;
-      margin-bottom: 12px;
-    }
-    .page-sub {
-      font-size: 18px;
-      color: #555;
-      margin-bottom: 36px;
-      line-height: 1.5;
-    }
+    .page-header { max-width: 1100px; margin: 0 auto; padding: 64px 48px 40px; }
+    .page-heading { font-weight: 900; font-size: clamp(32px, 5vw, 56px); line-height: 1.1; margin-bottom: 12px; }
+    .page-sub { font-size: 18px; color: #555; margin-bottom: 36px; line-height: 1.5; }
 
     /* ── FILTERS ── */
     .filters { display: flex; gap: 10px; flex-wrap: wrap; }
     .filter-btn {
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 700;
-      font-size: 14px;
-      padding: 9px 18px;
-      border-radius: 4px;
-      border: 1.5px solid #1C1C1A;
-      background: transparent;
-      color: #1C1C1A;
-      cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 14px;
+      padding: 9px 18px; border-radius: 4px; border: 1.5px solid #1C1C1A;
+      background: transparent; color: #1C1C1A; cursor: pointer;
       transition: background 0.15s, color 0.15s;
     }
     .filter-btn:hover { background: rgba(28,28,26,0.08); }
     .filter-btn.active { background: #1C1C1A; color: #F2EDE6; }
 
     /* ── MAP ── */
-    #map {
-      width: 100%;
-      height: 480px;
-      border-top: 1px solid #1C1C1A;
-      border-bottom: 1px solid #1C1C1A;
-      display: block;
-    }
+    #map { width: 100%; height: 480px; border-top: 1px solid #1C1C1A; border-bottom: 1px solid #1C1C1A; display: block; }
 
-    /* ── VENUES SECTION ── */
-    .venues-section {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 56px 48px 96px;
+    /* ── SECTION ── */
+    .section { max-width: 1100px; margin: 0 auto; padding: 56px 48px 96px; }
+    .section-heading { font-weight: 900; font-size: 26px; margin-bottom: 32px; }
+
+    /* ── GRID ── */
+    .venue-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+
+    /* ── CARD ── */
+    .venue-card {
+      background: #fff; border: 1px solid #1C1C1A; border-radius: 4px; padding: 20px;
+      display: flex; flex-direction: column; gap: 8px;
+      cursor: pointer; transition: box-shadow 0.15s, transform 0.12s;
     }
-    .venues-section-heading {
-      font-weight: 900;
-      font-size: 26px;
-      margin-bottom: 32px;
+    .venue-card:hover { box-shadow: 0 6px 20px rgba(28,28,26,0.12); transform: translateY(-2px); }
+    .venue-card.highlighted { border-color: #D4845A; box-shadow: 0 0 0 2px #D4845A; }
+    .venue-card.hidden { display: none; }
+
+    .card-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #D4845A; }
+    .card-name { font-weight: 700; font-size: 17px; line-height: 1.3; color: #1C1C1A; }
+    .card-address { font-size: 13px; color: #555; line-height: 1.5; }
+    .card-rating { font-size: 13px; color: #777; }
+    .card-rating .stars { color: #E8C84A; }
+    .card-status { font-size: 13px; font-weight: 700; }
+    .open   { color: #6B9E7A; }
+    .closed { color: #b94040; }
+    .unknown { color: #aaa; font-weight: 400; }
+    .card-directions {
+      font-size: 13px; font-weight: 700; color: #D4845A;
+      text-decoration: none; margin-top: 2px; display: inline-block;
     }
-    .venue-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-    }
+    .card-directions:hover { text-decoration: underline; }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
@@ -116,7 +89,7 @@
       .nav-logo { font-size: 18px; }
       .page-header { padding: 40px 20px 28px; }
       #map { height: 320px; }
-      .venues-section { padding: 40px 20px 64px; }
+      .section { padding: 40px 20px 64px; }
       .venue-grid { grid-template-columns: 1fr; }
     }
   </style>
@@ -140,39 +113,268 @@
 
   <div id="map"></div>
 
-  <div class="venues-section">
-    <h2 class="venues-section-heading">Dog-friendly bars and restaurants in Liverpool</h2>
-    <div class="venue-grid" id="venue-grid">
-      <!-- Cards injected by JavaScript -->
-    </div>
+  <div class="section">
+    <h2 class="section-heading">Dog-friendly bars and restaurants in Liverpool</h2>
+    <div class="venue-grid" id="venue-grid"></div>
   </div>
 
   <script>
-    const LIVERPOOL = { lat: 53.4084, lng: -2.9916 };
+    /* ── VENUE LIST ── */
+    const VENUES = [
+      /* Handpicked */
+      { id: 'baltic-market',      name: 'Baltic Market',                    address: 'Stanhope Street, Liverpool',              cat: 'restaurant', tag: 'Handpicked 🐾' },
+      { id: 'bao-and-bap',        name: 'Bao and Bap',                      address: 'Rodney Street, Liverpool',                cat: 'restaurant', tag: 'Handpicked 🐾' },
+      { id: 'dereks',             name: "Derek's Coffee & Sandwiches",       address: 'Lark Lane, Liverpool',                    cat: 'restaurant', tag: 'Handpicked 🐾',
+        note: 'Dog-friendly at all locations — Lark Lane · Berry Street · Allerton Road · College Road, Crosby' },
+      { id: 'halton-castle',      name: 'The Halton Castle',                 address: 'Mill Lane, Liverpool',                    cat: 'pub-bar',    tag: 'Handpicked 🐾' },
+      { id: 'eden-bar',           name: 'Eden Bar',                          address: 'Eaton Road, Liverpool',                   cat: 'pub-bar',    tag: 'Handpicked 🐾' },
+      /* Full list */
+      { id: 'ship-mitre',         name: 'The Ship and Mitre',                address: '133 Dale St, Liverpool',                  cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'dead-crafty',        name: 'The Dead Crafty Beer Company',      address: 'Dale St, City Centre, Liverpool',         cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'philharmonic',       name: 'The Philharmonic Dining Rooms',     address: '36 Hope St, Liverpool',                   cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'hope-anchor',        name: 'The Hope and Anchor',               address: 'Maryland St, Liverpool',                  cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'ma-boyles',          name: "Ma Boyle's Alehouse and Eatery",    address: 'Tower Buildings, Liverpool',              cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'cains',              name: 'Cains Brewery',                     address: 'Stanhope St, Liverpool',                  cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'cosy-club',          name: 'Cosy Club',                         address: 'Liverpool ONE, Liverpool',                cat: 'restaurant', tag: 'Restaurant' },
+      { id: 'salt-dog',           name: 'Salt Dog Slims',                    address: 'Rainford Gardens, Liverpool',             cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'pins',               name: 'Pins Social Club',                  address: 'Duke St, Liverpool',                      cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'slug-lettuce',       name: 'Slug and Lettuce',                  address: 'City Centre, Liverpool',                  cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'refinery',           name: 'The Refinery Liverpool',            address: 'City Centre, Liverpool',                  cat: 'restaurant', tag: 'Restaurant' },
+      { id: 'club-house',         name: 'The Club House',                    address: 'City Centre, Liverpool',                  cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'kazimier',           name: 'Kazimier Garden',                   address: '32 Seel St, Liverpool',                   cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'brewdog',            name: 'BrewDog Liverpool',                 address: 'Colquitt St, Liverpool',                  cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'buyers-club',        name: 'Buyers Club',                       address: 'Hardman St, Liverpool',                   cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'baltic-fleet',       name: 'Baltic Fleet',                      address: '33A Wapping, Liverpool',                  cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'baltic-social',      name: 'Baltic Social',                     address: 'Baltic Triangle, Liverpool',              cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'brasco-dock',        name: 'Brasco Lounge',                     address: 'Royal Albert Dock, Liverpool',            cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'punch-tarmeys',      name: "Punch Tarmey's",                    address: 'City Centre, Liverpool',                  cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'shenanigans',        name: 'Shenanigans',                       address: 'City Centre, Liverpool',                  cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'lodge',              name: 'The Lodge',                         address: '33 Lark Lane, Liverpool',                 cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'bookbinder',         name: 'The Bookbinder',                    address: 'Lark Lane, Liverpool',                    cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'milo',               name: 'Milo Lounge',                       address: 'Lark Lane, Liverpool',                    cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'caledonia',          name: 'The Caledonia',                     address: '22 Caledonia St, Liverpool',              cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'peter-kavs',         name: "Peter Kavanagh's",                  address: '2-6 Egerton St, Liverpool',               cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'dovedale',           name: 'Dovedale Towers',                   address: '60 Penny Lane, Liverpool',                cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'storrsdale',         name: 'The Storrsdale',                    address: 'Storrsdale Rd, Liverpool',                cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'george-crosby',      name: 'The George Crosby',                 address: '1 Moor Lane, Crosby, Liverpool',          cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'freshfield',         name: 'The Freshfield',                    address: 'Formby, Liverpool',                       cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'heatons-bridge',     name: 'Heatons Bridge',                    address: 'Scarisbrick',                             cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'dandelion',          name: 'The Dandelion Tavern',              address: 'Cronton, Widnes',                         cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'doctor-duncans',     name: 'Doctor Duncans',                    address: 'St Johns Lane, Liverpool',                cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'pen-factory',        name: 'The Pen Factory',                   address: 'Hope St, Liverpool',                      cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'monro',              name: 'The Monro',                         address: 'Duke St, Liverpool',                      cat: 'restaurant', tag: 'Restaurant' },
+      { id: 'one-oclock-gun',     name: "The One O'Clock Gun",               address: 'Royal Albert Dock, Liverpool',            cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'dog-house',          name: 'The Dog House',                     address: '15-17 Church Rd, Liverpool',              cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'head-of-steam',      name: 'The Head of Steam',                 address: '85 Hanover St, Liverpool',                cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'farmers-arms',       name: 'The Farmers Arms',                  address: 'Wirral',                                  cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'pho',                name: 'Pho Castle Street',                 address: 'Castle St, Liverpool',                    cat: 'restaurant', tag: 'Restaurant' },
+      { id: 'lock-quay',          name: 'Lock and Quay',                     address: '2 Irlam Road, Bootle, Liverpool',         cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'royal-standard',     name: 'The Royal Standard',                address: 'West Derby, Liverpool',                   cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'white-hart',         name: 'White Hart',                        address: '23 Hope Street, Liverpool',               cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'queen-hope',         name: 'Queen of Hope Street',              address: '1-1A Myrtle Street, Liverpool',           cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'swan',               name: 'Swan',                              address: '86 Wood Street, Liverpool',               cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'mayflower',          name: 'Mayflower',                         address: '34 Pilgrim Street, Liverpool',            cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'blondies',           name: 'Blondies',                          address: 'Aigburth, Liverpool',                     cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'trap-hatch',         name: 'Trap and Hatch',                    address: '135 South Road, Waterloo, Liverpool',     cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'cobden',             name: 'Cobden',                            address: '89 Quarry Street, Woolton, Liverpool',    cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'three-piggies',      name: 'Three Piggies',                     address: 'Allerton Road, Liverpool',                cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'rhubarb',            name: 'Rhubarb',                           address: 'Lark Lane, Liverpool',                    cat: 'restaurant', tag: 'Restaurant' },
+      { id: 'queens-arms',        name: 'Queens Arms',                       address: 'Victoria Street, Liverpool',              cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'permit-room',        name: 'Permit Room by Dishoom',            address: 'Liverpool City Centre',                   cat: 'restaurant', tag: 'Restaurant' },
+      { id: 'mowgli',             name: 'Mowgli',                            address: 'Bold Street, Liverpool',                  cat: 'restaurant', tag: 'Restaurant' },
+      { id: 'mcnastys',           name: "McNasty's",                         address: 'Seel Street, Liverpool',                  cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'frederiks',          name: 'Frederiks',                         address: 'Hope Street, Liverpool',                  cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'shandon-bells',      name: 'The Shandon Bells',                 address: 'Hope Street, Liverpool',                  cat: 'pub-bar',    tag: 'Pub / Bar' },
+      { id: 'duke-st-market',     name: 'Duke Street Food and Drink Market', address: 'Duke Street, Liverpool',                  cat: 'restaurant', tag: 'Restaurant' },
+      { id: 'brasco-mann',        name: 'Brasco Lounge',                     address: 'Mann Island, Liverpool',                  cat: 'pub-bar',    tag: 'Pub / Bar' },
+    ];
+
+    /* ── STATE ── */
+    let map, infoWindow;
+    const markers = {};
+    let activeFilter = 'all';
+
+    /* ── HELPERS ── */
+    function esc(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    function starsHtml(r) {
+      const n = Math.min(5, Math.round(r));
+      return '<span class="stars">' + '★'.repeat(n) + '☆'.repeat(5-n) + '</span>';
+    }
+    function openStatus(oh) {
+      if (!oh) return { cls: 'unknown', text: 'Hours not listed' };
+      if (oh.open_now === true) return { cls: 'open', text: 'Open now' };
+      const periods = oh.periods;
+      if (periods && periods.length) {
+        const now = new Date(), day = now.getDay(), mins = now.getHours()*60 + now.getMinutes();
+        for (let d = 0; d <= 7; d++) {
+          const cd = (day + d) % 7;
+          const ps = periods.filter(p => p.open && p.open.day === cd).sort((a,b) => +a.open.time - +b.open.time);
+          for (const p of ps) {
+            const h = +p.open.time.slice(0,2), m = +p.open.time.slice(2);
+            if (d === 0 && h*60+m <= mins) continue;
+            const ap = h >= 12 ? 'PM' : 'AM', h12 = h%12||12;
+            const tl = h12 + (m ? ':'+String(m).padStart(2,'0') : '') + ' ' + ap;
+            if (d === 0) return { cls: 'closed', text: 'Closed — opens ' + tl };
+            if (d === 1) return { cls: 'closed', text: 'Closed — opens ' + tl + ' tomorrow' };
+            const dn = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+            return { cls: 'closed', text: 'Closed — opens ' + dn[cd] + ' ' + tl };
+          }
+        }
+      }
+      return { cls: 'closed', text: 'Closed now' };
+    }
+
+    /* ── BUILD INITIAL CARDS ── */
+    (function buildCards() {
+      const grid = document.getElementById('venue-grid');
+      VENUES.forEach(v => {
+        const fallbackDir = 'https://www.google.com/maps/search/' + encodeURIComponent(v.name + ', ' + v.address);
+        const noteHtml = v.note ? '<div class="card-address" style="font-style:italic;">' + esc(v.note) + '</div>' : '';
+        grid.insertAdjacentHTML('beforeend',
+          '<div class="venue-card" id="c-' + v.id + '" data-id="' + v.id + '" data-cat="' + v.cat + '">' +
+            '<div class="card-tag">' + esc(v.tag) + '</div>' +
+            '<div class="card-name">' + esc(v.name) + '</div>' +
+            '<div class="card-address">' + esc(v.address) + '</div>' +
+            noteHtml +
+            '<div class="card-status unknown" id="s-' + v.id + '">Loading hours…</div>' +
+            '<a class="card-directions" id="d-' + v.id + '" href="' + esc(fallbackDir) + '" target="_blank" rel="noopener">Get directions →</a>' +
+          '</div>'
+        );
+        document.getElementById('c-' + v.id).addEventListener('click', function(e) {
+          if (e.target.tagName === 'A') return;
+          const mk = markers[v.id];
+          if (!mk) return;
+          map.panTo(mk.getPosition());
+          map.setZoom(15);
+          google.maps.event.trigger(mk, 'click');
+          document.getElementById('map').scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+    })();
+
+    /* ── MAP + ENRICHMENT ── */
+    const MAP_STYLES = [
+      { featureType: 'poi',       elementType: 'all',             stylers: [{ visibility: 'off' }] },
+      { featureType: 'transit',   elementType: 'labels.icon',     stylers: [{ visibility: 'off' }] },
+      { featureType: 'road',      elementType: 'geometry.fill',   stylers: [{ color: '#ffffff' }] },
+      { featureType: 'road',      elementType: 'geometry.stroke', stylers: [{ color: '#e0d8ce' }] },
+      { featureType: 'landscape', elementType: 'geometry.fill',   stylers: [{ color: '#f5f0ea' }] },
+      { featureType: 'water',     elementType: 'geometry.fill',   stylers: [{ color: '#bdd5e0' }] },
+    ];
 
     function initMap() {
-      new google.maps.Map(document.getElementById('map'), {
-        center: LIVERPOOL,
-        zoom: 13,
-        mapTypeControl: false,
-        streetViewControl: false,
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 53.4084, lng: -2.9916 },
+        zoom: 13, styles: MAP_STYLES,
+        mapTypeControl: false, streetViewControl: false,
         fullscreenControl: true,
-        styles: [
-          { featureType: 'poi',       elementType: 'all',             stylers: [{ visibility: 'off' }] },
-          { featureType: 'transit',   elementType: 'labels.icon',     stylers: [{ visibility: 'off' }] },
-          { featureType: 'road',      elementType: 'geometry.fill',   stylers: [{ color: '#ffffff' }] },
-          { featureType: 'road',      elementType: 'geometry.stroke', stylers: [{ color: '#e0d8ce' }] },
-          { featureType: 'landscape', elementType: 'geometry.fill',   stylers: [{ color: '#f5f0ea' }] },
-          { featureType: 'water',     elementType: 'geometry.fill',   stylers: [{ color: '#bdd5e0' }] },
-        ],
+        zoomControlOptions: { position: google.maps.ControlPosition.RIGHT_BOTTOM },
+      });
+      infoWindow = new google.maps.InfoWindow({ maxWidth: 260 });
+      const svc = new google.maps.places.PlacesService(map);
+      VENUES.forEach(v => enrichVenue(v, svc));
+    }
+
+    function enrichVenue(v, svc) {
+      svc.findPlaceFromQuery(
+        { query: v.name + ', ' + v.address, fields: ['place_id', 'geometry'] },
+        function(res, st) {
+          if (st !== google.maps.places.PlacesServiceStatus.OK || !res || !res.length) {
+            setStatus(v.id, 'unknown', 'Details coming soon');
+            return;
+          }
+          const placeId = res[0].place_id;
+          const fbLoc   = res[0].geometry && res[0].geometry.location;
+
+          svc.getDetails(
+            { placeId: placeId, fields: ['formatted_address','opening_hours','rating','user_ratings_total','geometry'] },
+            function(place, ds) {
+              const ok  = ds === google.maps.places.PlacesServiceStatus.OK;
+              const loc = (ok && place && place.geometry) ? place.geometry.location : fbLoc;
+
+              /* Update status */
+              if (ok && place) {
+                const s = openStatus(place.opening_hours);
+                setStatus(v.id, s.cls, s.text);
+
+                /* Rating row — insert after card-name if not already there */
+                if (place.rating && !document.getElementById('r-' + v.id)) {
+                  const nameEl = document.querySelector('#c-' + v.id + ' .card-name');
+                  if (nameEl) {
+                    const ratingText = place.rating +
+                      (place.user_ratings_total ? ' (' + place.user_ratings_total.toLocaleString() + ' reviews)' : '');
+                    nameEl.insertAdjacentHTML('afterend',
+                      '<div class="card-rating" id="r-' + v.id + '">' + starsHtml(place.rating) + ' ' + esc(ratingText) + '</div>'
+                    );
+                  }
+                }
+
+                /* Update address if better one available */
+                if (place.formatted_address) {
+                  const addrEl = document.querySelector('#c-' + v.id + ' .card-address');
+                  if (addrEl && !v.note) addrEl.textContent = place.formatted_address;
+                }
+
+                /* Proper directions link */
+                const dirEl = document.getElementById('d-' + v.id);
+                if (dirEl) dirEl.href = 'https://www.google.com/maps/dir/?api=1&destination_place_id=' + placeId;
+              } else {
+                setStatus(v.id, 'unknown', 'Details coming soon');
+              }
+
+              /* Add map pin */
+              if (loc) addMarker(v, loc, ok && place ? place.rating : null);
+            }
+          );
+        }
+      );
+    }
+
+    function setStatus(id, cls, text) {
+      const el = document.getElementById('s-' + id);
+      if (!el) return;
+      el.className = 'card-status ' + cls;
+      el.textContent = text;
+    }
+
+    function addMarker(v, loc, rating) {
+      const mk = new google.maps.Marker({
+        position: loc, map: map, title: v.name,
+        icon: { path: google.maps.SymbolPath.CIRCLE, scale: 9, fillColor: '#D4845A', fillOpacity: 1, strokeColor: '#1C1C1A', strokeWeight: 1.5 },
+      });
+      markers[v.id] = mk;
+
+      mk.addListener('click', function() {
+        infoWindow.setContent(
+          '<div style="font-family:\'DM Sans\',sans-serif;padding:4px 2px;min-width:150px;">' +
+            '<div style="font-weight:700;font-size:14px;color:#1C1C1A;margin-bottom:4px;line-height:1.3;">' + esc(v.name) + '</div>' +
+            (rating ? '<div style="font-size:13px;color:#777;"><span style="color:#E8C84A;">' + starsHtml(rating).replace(/<[^>]+>/g,'') + '</span> ' + rating + '</div>' : '') +
+          '</div>'
+        );
+        infoWindow.open(map, mk);
+
+        const card = document.getElementById('c-' + v.id);
+        if (card && !card.classList.contains('hidden')) {
+          document.querySelectorAll('.venue-card.highlighted').forEach(function(c) { c.classList.remove('highlighted'); });
+          card.classList.add('highlighted');
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          setTimeout(function() { card.classList.remove('highlighted'); }, 2500);
+        }
       });
     }
 
-    /* Filter buttons */
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    /* ── FILTERS ── */
+    document.querySelectorAll('.filter-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
         btn.classList.add('active');
+        activeFilter = btn.dataset.filter;
+        document.querySelectorAll('.venue-card').forEach(function(card) {
+          const match = activeFilter === 'all' || card.dataset.cat === activeFilter;
+          card.classList.toggle('hidden', !match);
+        });
       });
     });
   </script>
