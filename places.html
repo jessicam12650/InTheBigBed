@@ -244,6 +244,16 @@
       return { cls: 'closed', text: 'Closed now' };
     }
 
+    /* Return today's hours string from weekday_text, e.g. "12:00 PM – 11:00 PM" */
+    function todayHours(oh) {
+      if (!oh || !oh.weekday_text || !oh.weekday_text.length) return '';
+      /* weekday_text is Mon–Sun (index 0=Mon); JS getDay() is 0=Sun */
+      const idx = (new Date().getDay() + 6) % 7;
+      const entry = oh.weekday_text[idx] || '';
+      const colon = entry.indexOf(':');
+      return colon === -1 ? '' : entry.slice(colon + 2).trim();
+    }
+
     /* ── BUILD CARDS ── */
     function buildCards(venues, gridId, featured) {
       const grid = document.getElementById(gridId);
@@ -330,7 +340,8 @@
 
               if (ok && place) {
                 const s = openStatus(place.opening_hours);
-                setStatus(v.id, s.cls, s.text);
+                const h = todayHours(place.opening_hours);
+                setStatus(v.id, s.cls, h ? s.text + ' \u00b7 ' + h : s.text);
 
                 if (place.rating && !document.getElementById('r-' + v.id)) {
                   const nameEl = document.querySelector('#c-' + v.id + ' .card-name');
